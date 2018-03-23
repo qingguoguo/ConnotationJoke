@@ -141,6 +141,9 @@ public class ViewUtils {
             }
         }
 
+        /**
+         * 检测网络
+         */
         private boolean networkAvailable(Context context) {
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             if (connectivityManager == null) {
@@ -150,7 +153,7 @@ public class ViewUtils {
             if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
                 return true;
             }
-            return false;
+            return false;//D:\develop\Java\jdk1.8.0_77\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;%TigerKin%;D:\program files (x86)\MySQL\MySQL Server 5.1\bin;D:\develop\Androiddevelopsdk\AndroidStudioSdk\sdk\tools;D:\develop\Androiddevelopsdk\AndroidStudioSdk\sdk\platform-tools;d:\Program Files\Git\cmd;C:\Program Files\TortoiseSVN\bin
         }
     }
 }
