@@ -1,5 +1,6 @@
 package com.qingguoguo.connotationjoke;
 
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,12 @@ public class MainActivity extends BaseSkinActivity {
     @Override
     protected void initView() {
         mTextView = viewById(R.id.test_tv);
+        mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = 2 / 0;
+            }
+        });
     }
 
     @Override
