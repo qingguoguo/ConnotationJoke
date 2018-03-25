@@ -3,6 +3,7 @@ package com.qingguoguo.connotationjoke;
 import android.app.Application;
 import android.util.Log;
 
+import com.alipay.euler.andfix.patch.PatchManager;
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 
@@ -16,9 +17,14 @@ public class BaseApplication extends Application {
 
     public final static String TAG = BaseApplication.class.getSimpleName();
     public static BaseApplication instance;
+    private static PatchManager mPatchManager;
 
     public static BaseApplication getInstance() {
         return instance;
+    }
+
+    public static PatchManager getPatchManager() {
+        return mPatchManager;
     }
 
     @Override
@@ -26,7 +32,14 @@ public class BaseApplication extends Application {
         instance = this;
         super.onCreate();
         initLogUtils();
-        ExceptionCrashHandler.getInstace().init(this);
+        initAliAndFix();//初始化阿里热修复
+        ExceptionCrashHandler.getInstace().init(this); //初始化异常处理器
+    }
+
+    private void initAliAndFix() {
+        mPatchManager = new PatchManager(this);
+        mPatchManager.init("1.0");
+        mPatchManager.loadPatch();//加载之前的patch包
     }
 
     private void initLogUtils() {

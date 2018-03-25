@@ -1,5 +1,6 @@
 package com.qingguoguo.connotationjoke;
 
+import android.os.Environment;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
 
@@ -40,6 +42,28 @@ public class MainActivity extends BaseSkinActivity {
     @Override
     protected void initData() {
         //崩溃日志上传服务器
+        uploadCrashFile();
+        //测试,阿里热修复
+        testAliAndFix();
+    }
+
+    private void testAliAndFix() {
+        //每次启动的时候,从后台获取差分包,fix.patch 修复Bug
+        //测试直接从本地获取fix.patch
+        File fixFile = new File(Environment.getExternalStorageDirectory(), "fix.patch");
+        if (fixFile.exists()) {
+            //修复Bug
+            try {
+                BaseApplication.getPatchManager().addPatch(fixFile.getAbsolutePath());
+                Toast.makeText(this,"修复成功",Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                Toast.makeText(this,"修复失败",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void uploadCrashFile() {
         File crashFile = ExceptionCrashHandler.getInstace().getCrashFile();
         if (crashFile != null && crashFile.exists()) {
             StringBuffer sb = new StringBuffer();
