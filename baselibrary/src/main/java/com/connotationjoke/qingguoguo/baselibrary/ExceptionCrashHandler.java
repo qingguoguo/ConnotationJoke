@@ -6,7 +6,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
+
+import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,7 +30,8 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
     private Thread.UncaughtExceptionHandler mExceptionHandler;
     private Context mContext;
     public final static String CRASH = "crash";
-    public final static String CRASH_NAME = "crash_name";
+    public final static String CRASH_LOG = "crash_log";
+    public final static String TAG = ExceptionCrashHandler.class.getSimpleName();
 
     private ExceptionCrashHandler() {
     }
@@ -47,24 +49,26 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
 
     public void init(Context context) {
         this.mContext = context;
-        //设置全局的异常类为本类
+        //设置处理异常器为本类
         Thread.currentThread().setUncaughtExceptionHandler(this);
+        // 获取系统默认的异常处理器UncaughtException
         mExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        //全局异常
-        Log.e("MyTag", "报异常了");
-        //写入到本地文件  异常信息  当前的版本  手机信息
-        //1.崩溃的详细信息
-        //2.应用信息,包名,版本号
-        //3.手机信息
-        //4.保存当期文件,等应用再次启动再上传
+        //处理全局异常
+        LogUtils.e(TAG, "报异常了");
+        //应该把异常信息写入到本地文件  包含异常详细信息,当前的应用信息,手机信息
+
+        //1.保存当前文件,等应用再次启动再上传
         String crashFileName = saveInfoToSD(e);
+        //2.缓存崩溃日志
         cacheCrashFile(crashFileName);
-        Log.e("MyTag", "crashFileName:" + crashFileName);
-        //让系统默认处理
+        //crashFileName:/storage/emulated/0/Android/data/com.qingguoguo.connotationjoke/files/crash_log/crash/2018_03_25_15_27.txt
+        LogUtils.e(TAG, "crashFileName:" + crashFileName);
+
+        //3.让系统默认处理(如果不让系统默认处理会ANR,处理了会crash)
         mExceptionHandler.uncaughtException(t, e);
     }
 
@@ -79,14 +83,15 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
         }
 
         // 2.崩溃的详细信息
-        obtainExceptionInfo(e);
+        sb.append(obtainExceptionInfo(e));
         // 3.保存文件
-        if (Environment.getExternalStorageState()
-                .equals(Environment.MEDIA_MOUNTED)) {
-            Log.e("MyTag", "mContext.getFilesDir():" + mContext.getFilesDir());
-            File dir = new File(mContext.getFilesDir() + File.separator + CRASH + File.separator);
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            LogUtils.e(TAG, "mContext.getFilesDir():" + mContext.getFilesDir());///data/user/0/com.qingguoguo.connotationjoke/files
+            LogUtils.e(TAG, "mContext.getFilesDir():" + mContext.getExternalFilesDir(CRASH_LOG));///storage/emulated/0/Android/data/com.qingguoguo.connotationjoke/files/crash_log
+            //File dir = new File(mContext.getFilesDir() + File.separator + CRASH + File.separator);
+            File dir = new File(mContext.getExternalFilesDir(CRASH_LOG) + File.separator + CRASH + File.separator);
 
-            //先删除之前的异常信息
+            //4.先删除之前的异常信息
             if (dir.exists()) {
                 //删除该目录下的所有子文件
                 deleteDir(dir);
@@ -175,9 +180,17 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
      * 缓存崩溃文件
      */
     private void cacheCrashFile(String crashFileName) {
-        SharedPreferences sp = mContext.getSharedPreferences(CRASH
+        SharedPreferences sp = mContext.getSharedPreferences(CRASH_LOG
                 , Context.MODE_PRIVATE);
-        sp.edit().putString(CRASH_NAME, crashFileName).commit();
+        sp.edit().putString(CRASH_LOG, crashFileName).commit();
+    }
+
+    /**
+     * 获取缓存的崩溃文件
+     */
+    public File getCrashFile() {
+        return new File(mContext.getSharedPreferences(CRASH_LOG, Context.MODE_PRIVATE).
+                getString(CRASH_LOG, ""));
     }
 
     /**
@@ -189,6 +202,7 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
         PrintWriter printWriter = new PrintWriter(stringWriter);
         throwable.printStackTrace(printWriter);
         printWriter.close();
+        LogUtils.i(TAG, "异常信息:" + stringWriter.toString());
         return stringWriter.toString();
     }
 }
