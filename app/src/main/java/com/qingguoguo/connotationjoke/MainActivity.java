@@ -3,13 +3,13 @@ package com.qingguoguo.connotationjoke;
 import android.os.Environment;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.CheckNet;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.OnClick;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.ViewById;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
+import com.connotationjoke.qingguoguo.baselibrary.util.ToastUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,9 +55,10 @@ public class MainActivity extends BaseSkinActivity {
             //修复Bug
             try {
                 BaseApplication.getPatchManager().addPatch(fixFile.getAbsolutePath());
-                Toast.makeText(this,"修复成功",Toast.LENGTH_SHORT).show();
+                ToastUtils.showShort("修复成功");
+
             } catch (IOException e) {
-                Toast.makeText(this,"修复失败",Toast.LENGTH_SHORT).show();
+                ToastUtils.showShort("修复失败");
                 e.printStackTrace();
             }
         }
@@ -89,7 +90,7 @@ public class MainActivity extends BaseSkinActivity {
     @CheckNet
     @OnClick({R.id.test_tv, R.id.test_iv})
     private void testOnclick() {
-        Toast.makeText(this, "哈哈哈,注入事件成功", Toast.LENGTH_SHORT).show();
+        ToastUtils.showShort("哈哈哈,注入事件成功");
         initData();
     }
 }
