@@ -34,7 +34,8 @@ public class MainActivity extends BaseSkinActivity {
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int i = 2 / 0;
+                int i = 2 / 2;
+                ToastUtils.showShort("修复后");
             }
         });
     }
@@ -50,7 +51,8 @@ public class MainActivity extends BaseSkinActivity {
     private void testAliAndFix() {
         //每次启动的时候,从后台获取差分包,fix.patch 修复Bug
         //测试直接从本地获取fix.patch
-        File fixFile = new File(Environment.getExternalStorageDirectory(), "fix.patch");
+        File fixFile = new File(Environment.getExternalStorageDirectory(), "fix.apatch");
+        LogUtils.i(TAG, "fix.apatch路径：" + fixFile.getAbsolutePath());
         if (fixFile.exists()) {
             //修复Bug
             try {
@@ -75,7 +77,7 @@ public class MainActivity extends BaseSkinActivity {
                 while ((len = fileInputStream.read(bytes)) != -1) {
                     sb.append(new String(bytes, 0, len)).append("\n");
                 }
-                LogUtils.i(TAG, sb.toString());
+                LogUtils.i(TAG, "上次的异常信息：" + sb.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -91,6 +93,5 @@ public class MainActivity extends BaseSkinActivity {
     @OnClick({R.id.test_tv, R.id.test_iv})
     private void testOnclick() {
         ToastUtils.showShort("哈哈哈,注入事件成功");
-        initData();
     }
 }
