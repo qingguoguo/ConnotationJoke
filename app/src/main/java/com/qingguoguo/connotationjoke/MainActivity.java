@@ -1,6 +1,7 @@
 package com.qingguoguo.connotationjoke;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,7 +26,6 @@ public class MainActivity extends BaseSkinActivity {
 
     @Override
     protected void initTitle() {
-
     }
 
     @Override
@@ -35,7 +35,7 @@ public class MainActivity extends BaseSkinActivity {
             @Override
             public void onClick(View v) {
                 int i = 2 / 2;
-                ToastUtils.showShort("修复后");
+                Log.i(TAG,"修复后");
             }
         });
     }
@@ -44,15 +44,13 @@ public class MainActivity extends BaseSkinActivity {
     protected void initData() {
         //崩溃日志上传服务器
         uploadCrashFile();
-        //测试,阿里热修复
-        testAliAndFix();
     }
 
     private void testAliAndFix() {
         //每次启动的时候,从后台获取差分包,fix.patch 修复Bug
         //测试直接从本地获取fix.patch
         File fixFile = new File(Environment.getExternalStorageDirectory(), "fix.apatch");
-        LogUtils.i(TAG, "fix.apatch路径：" + fixFile.getAbsolutePath());
+        Log.i(TAG, "fix.apatch路径：" + fixFile.getAbsolutePath());
         if (fixFile.exists()) {
             //修复Bug
             try {
@@ -90,8 +88,10 @@ public class MainActivity extends BaseSkinActivity {
     }
 
     @CheckNet
-    @OnClick({R.id.test_tv, R.id.test_iv})
+    @OnClick({R.id.test_iv})
     private void testOnclick() {
-        ToastUtils.showShort("哈哈哈,注入事件成功");
+        ToastUtils.showShort("测试,阿里热修复,加载补丁");
+        //测试,阿里热修复
+        testAliAndFix();
     }
 }

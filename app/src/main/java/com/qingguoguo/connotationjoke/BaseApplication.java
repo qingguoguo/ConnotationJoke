@@ -46,7 +46,8 @@ public class BaseApplication extends Application {
     private void initAliAndFix() {
         mPatchManager = new PatchManager(this);
         mPatchManager.init(PhoneSystemUtils.getAppVersion());
-        mPatchManager.loadPatch();//加载之前的patch包
+        //加载之前的patch包
+        mPatchManager.loadPatch();
     }
 
     private void initLogUtils() {
