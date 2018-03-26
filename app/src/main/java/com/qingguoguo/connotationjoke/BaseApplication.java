@@ -6,6 +6,7 @@ import android.util.Log;
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
+import com.connotationjoke.qingguoguo.baselibrary.util.PhoneSystemUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.Utils;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -44,7 +45,7 @@ public class BaseApplication extends Application {
 
     private void initAliAndFix() {
         mPatchManager = new PatchManager(this);
-        mPatchManager.init("1.0");
+        mPatchManager.init(PhoneSystemUtils.getAppVersion());
         mPatchManager.loadPatch();//加载之前的patch包
     }
 

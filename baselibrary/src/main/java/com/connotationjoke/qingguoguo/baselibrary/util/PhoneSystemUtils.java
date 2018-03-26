@@ -1,6 +1,5 @@
 package com.connotationjoke.qingguoguo.baselibrary.util;
 
-import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
@@ -63,13 +62,12 @@ public class PhoneSystemUtils {
     /***
      * 获取APP版本号
      *
-     * @param context
      * @return
      */
-    public static String getAppVersion(Context context) {
+    public static String getAppVersion() {
         try {
-            PackageManager manager = context.getPackageManager();
-            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            PackageManager manager = Utils.getApp().getPackageManager();
+            PackageInfo info = manager.getPackageInfo(Utils.getApp().getPackageName(), 0);
             return info.versionName;
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,7 +90,6 @@ public class PhoneSystemUtils {
 //        }
 //        return null;
 //    }
-
     public static void log() {
         //Xiaomi,7.0,zh,MIX
         Log.i("DeviceTAG", PhoneSystemUtils.getDeviceBrand() + "," +
