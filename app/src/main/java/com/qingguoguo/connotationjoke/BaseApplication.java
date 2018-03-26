@@ -6,6 +6,8 @@ import android.util.Log;
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
+import com.connotationjoke.qingguoguo.baselibrary.util.Utils;
+import com.squareup.leakcanary.LeakCanary;
 
 /**
  * 作者:qingguoguo
@@ -31,9 +33,13 @@ public class BaseApplication extends Application {
     public void onCreate() {
         instance = this;
         super.onCreate();
+        Utils.init(this);
         initLogUtils();
-        initAliAndFix();//初始化阿里热修复
-        ExceptionCrashHandler.getInstace().init(this); //初始化异常处理器
+        //初始化阿里热修复
+        initAliAndFix();
+        //初始化异常处理器
+        ExceptionCrashHandler.getInstace().init(this);
+        initLeakCanary();
     }
 
     private void initAliAndFix() {
@@ -46,5 +52,15 @@ public class BaseApplication extends Application {
         //用ApplicationInfo的属性去判断是否是 Debug 版本
         LogUtils.syncIsDebug(getApplicationContext());
         Log.i(TAG, "BuildConfig.is_DEBUG：" + BuildConfig.is_DEBUG + " , LogUtils.isDebug()" + LogUtils.isDebug());
+    }
+
+    private void initLeakCanary() {
+        // 内存泄露检查工具
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
     }
 }

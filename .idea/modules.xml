@@ -3,9 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ConnotationJoke.iml" filepath="$PROJECT_DIR$/ConnotationJoke.iml" />
+      <module fileurl="file://D:\wkKMProject\ConnotationJoke\ConnotationJoke.iml" filepath="D:\wkKMProject\ConnotationJoke\ConnotationJoke.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\wkKMProject\ConnotationJoke\app\app.iml" filepath="D:\wkKMProject\ConnotationJoke\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/baselibrary/baselibrary.iml" filepath="$PROJECT_DIR$/baselibrary/baselibrary.iml" />
+      <module fileurl="file://D:\wkKMProject\ConnotationJoke\baselibrary\baselibrary.iml" filepath="D:\wkKMProject\ConnotationJoke\baselibrary\baselibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/framelibrary/framelibrary.iml" filepath="$PROJECT_DIR$/framelibrary/framelibrary.iml" />
+      <module fileurl="file://D:\wkKMProject\ConnotationJoke\framelibrary\framelibrary.iml" filepath="D:\wkKMProject\ConnotationJoke\framelibrary\framelibrary.iml" />
     </modules>
   </component>
 </project>
