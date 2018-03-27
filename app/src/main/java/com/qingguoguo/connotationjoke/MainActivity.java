@@ -19,7 +19,7 @@ import java.io.IOException;
 import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
 
 
-public class MainActivity extends BaseSkinActivity {
+public class MainActivity extends BaseSkinActivity implements View.OnClickListener {
     public final static String TAG = MainActivity.class.getSimpleName();
     @ViewById(R.id.test_tv)
     private TextView mTextView;
@@ -31,13 +31,7 @@ public class MainActivity extends BaseSkinActivity {
     @Override
     protected void initView() {
         mTextView = viewById(R.id.test_tv);
-        mTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int i = 2 / 2;
-                Log.i(TAG,"修复后");
-            }
-        });
+        mTextView.setOnClickListener(this);
     }
 
     @Override
@@ -93,5 +87,15 @@ public class MainActivity extends BaseSkinActivity {
         ToastUtils.showShort("测试,阿里热修复,加载补丁");
         //测试,阿里热修复
         testAliAndFix();
+    }
+
+    @Override
+    public void onClick(View v) {
+//        Log.i(TAG, "修复后");
+//        int i = 2 / 2;
+//        ToastUtils.showShort("修复后:" + i);
+
+        Log.i(TAG, "修复前");
+        ToastUtils.showShort("修复前:" + 0);
     }
 }
