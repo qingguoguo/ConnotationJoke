@@ -30,7 +30,8 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     private TextView mTextView;
 
     @Override
-    protected void initTitle() {
+    protected int getLayoutID() {
+        return R.layout.activity_main;
     }
 
     @Override
@@ -40,14 +41,13 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     }
 
     @Override
-    protected void initData() {
-        //崩溃日志上传服务器
-        uploadCrashFile();
+    protected void initTitle() {
     }
 
     @Override
-    protected int getLayoutID() {
-        return R.layout.activity_main;
+    protected void initData() {
+        //崩溃日志上传服务器
+        uploadCrashFile();
     }
 
     @CheckNet
@@ -65,9 +65,10 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 //        int i = 2 / 2;
 //        ToastUtils.showShort("修复后:" + i);
 
-        Log.i(TAG, "修复前");
-        ToastUtils.showShort("修复前:" + 0);
-        int i = 2 / 0;
+//        Log.i(TAG, "修复前");
+//        ToastUtils.showShort("修复前:" + 0);
+//        int i = 2 / 0;
+        startActivity(TestActivity.class);
     }
 
     private void testAliAndFix() {

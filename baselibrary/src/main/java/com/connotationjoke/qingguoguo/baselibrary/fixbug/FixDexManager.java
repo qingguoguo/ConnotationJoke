@@ -39,7 +39,8 @@ public class FixDexManager {
      * @param srcPath
      */
     public void fixDex(String srcPath) throws Exception {
-        //1.获取已经运行的dexElements
+
+        //1.获取App已经运行的dexElements
         ClassLoader applicationClassLoader = mContext.getClassLoader();
         Object applicationDexElements = getDexElementsByClassLoader(applicationClassLoader);
 
@@ -51,6 +52,7 @@ public class FixDexManager {
         }
 
         File targetFile = new File(mDexDir, srcFile.getName());
+
         if (targetFile.exists()) {
             Log.d(TAG, "patch [" + srcPath + "] has be loaded.");
             return;
@@ -77,6 +79,7 @@ public class FixDexManager {
                     optimizedDirectory,
                     null,
                     applicationClassLoader);
+
             Object fixDexElements = getDexElementsByClassLoader(fixDexClassLoader);
 
             //3. 把补丁的dexElements插到在运行的dexElement前面
@@ -131,20 +134,20 @@ public class FixDexManager {
     /**
      * 把dexElements注入到ClassLoader中
      *
-     * @param applicationClassLoader
-     * @param applicationDexElements
+     * @param classLoader
+     * @param dexElements
      */
-    private void injectElements(ClassLoader applicationClassLoader, Object applicationDexElements) throws Exception {
+    private void injectElements(ClassLoader classLoader, Object dexElements) throws Exception {
         //1.先获取PathList
         Field pathListFd = BaseDexClassLoader.class.getDeclaredField("pathList");
         pathListFd.setAccessible(true);
         //返回指定对象上此 Field 表示的字段的值
-        Object pathList = pathListFd.get(applicationClassLoader);
+        Object pathList = pathListFd.get(classLoader);
 
         //2.获取dexElements
-        Field dexElements = pathList.getClass().getDeclaredField("dexElements");
-        dexElements.setAccessible(true);
-        dexElements.set(pathList, applicationDexElements);
+        Field dexElementsField = pathList.getClass().getDeclaredField("dexElements");
+        dexElementsField.setAccessible(true);
+        dexElementsField.set(pathList, dexElements);
     }
 
     /**
