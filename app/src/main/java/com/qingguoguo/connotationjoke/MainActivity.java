@@ -1,6 +1,11 @@
 package com.qingguoguo.connotationjoke;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -25,7 +30,11 @@ import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
  * @Describe :
  */
 public class MainActivity extends BaseSkinActivity implements View.OnClickListener {
+
     public final static String TAG = MainActivity.class.getSimpleName();
+    int REQUEST_EXTERNAL_STORAGE = 1;
+
+
     @ViewById(R.id.test_tv)
     private TextView mTextView;
 
@@ -57,6 +66,32 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
         //测试,阿里热修复
         //testAliAndFix();
         fixDexBug();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void initPremiss() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return;
+        }
+
+        String[] PERMISSIONS_STORAGE = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    MainActivity.this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initPremiss();
     }
 
     @Override

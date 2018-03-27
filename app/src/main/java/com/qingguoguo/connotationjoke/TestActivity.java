@@ -33,7 +33,7 @@ public class TestActivity extends BaseSkinActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        //        Log.i(TAG, "修复后");
+//        Log.i(TAG, "修复后");
 //        int i = 2 / 2;
 //        ToastUtils.showShort("修复后:" + i);
 
