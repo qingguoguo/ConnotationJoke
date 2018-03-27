@@ -33,14 +33,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
     }
 
+    @LayoutRes
+    protected abstract int getLayoutID();
+
     protected abstract void initTitle();
 
     protected abstract void initView();
 
     protected abstract void initData();
-
-    @LayoutRes
-    protected abstract int getLayoutID();
 
     protected void startActivity(Class<?> clazz) {
         Intent intent = new Intent(this, clazz);
