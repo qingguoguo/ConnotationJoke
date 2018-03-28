@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
+import com.connotationjoke.qingguoguo.baselibrary.fixbug.FixDexManager;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.PhoneSystemUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.Utils;
@@ -34,13 +35,25 @@ public class BaseApplication extends Application {
     public void onCreate() {
         instance = this;
         super.onCreate();
-        Utils.init(this);
-        initLogUtils();
-        //初始化阿里热修复
-        initAliAndFix();
         //初始化异常处理器
         ExceptionCrashHandler.getInstace().init(this);
         initLeakCanary();
+        initLogUtils();
+
+        Utils.init(this);
+        //初始化阿里热修复
+        initAliAndFix();
+        //初始化自己的热修复
+        initFixDex();
+    }
+
+    private void initFixDex() {
+        FixDexManager fixDexManager = new FixDexManager(this);
+        try {
+            fixDexManager.loadFixDex();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initAliAndFix() {

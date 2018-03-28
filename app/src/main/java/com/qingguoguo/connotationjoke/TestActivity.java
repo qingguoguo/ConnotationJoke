@@ -7,6 +7,11 @@ import com.connotationjoke.qingguoguo.baselibrary.util.ToastUtils;
 
 import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
 
+/**
+ * @author :qingguoguo
+ * @datetime ：2018/3/28 9:52
+ * @Describe :
+ */
 public class TestActivity extends BaseSkinActivity implements View.OnClickListener {
 
     private static final String TAG = TestActivity.class.getSimpleName();
