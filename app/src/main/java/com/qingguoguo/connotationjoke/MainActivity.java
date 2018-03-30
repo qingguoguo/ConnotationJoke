@@ -34,7 +34,6 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     public final static String TAG = MainActivity.class.getSimpleName();
     int REQUEST_EXTERNAL_STORAGE = 1;
 
-
     @ViewById(R.id.test_tv)
     private TextView mTextView;
 
@@ -103,7 +102,11 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 //        Log.i(TAG, "修复前");
 //        ToastUtils.showShort("修复前:" + 0);
 //        int i = 2 / 0;
-        startActivity(TestActivity.class);
+//        startActivity(TestActivity.class);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+//                .setCancelable(false)
+//                .setContentView(R.layout.activity_test)
+//                .setOnClickListener().show();
     }
 
     private void testAliAndFix() {
