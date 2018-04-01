@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
+import connotationjoke.qingguoguo.com.framelibrary.DefaultNavigationBar;
 
 /**
  * @author :qingguoguo
@@ -52,7 +54,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 
     @Override
     protected void initTitle() {
-        //testNavigationBar();
+        testNavigationBar();
     }
 
     @Override
@@ -112,8 +114,18 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     }
 
     private void testNavigationBar() {
-//        ViewGroup viewGroup = findViewById(R.id.main_root);
-//        DefaultNavigationBar defaultNavigationBar = new DefaultNavigationBar.Builder(this, viewGroup).create();
+        ViewGroup viewGroup = findViewById(R.id.main_root);
+        DefaultNavigationBar defaultNavigationBar = new DefaultNavigationBar.
+                Builder(this, viewGroup)
+                .setTitle("投稿")
+                .setRightText("发布")
+                .setRightOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ToastUtils.showShort("测试一下");
+                    }
+                })
+                .create();
     }
 
     private void testShowDialog() {
