@@ -52,6 +52,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 
     @Override
     protected void initTitle() {
+        //testNavigationBar();
     }
 
     @Override
@@ -106,7 +107,13 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 //        int i = 2 / 0;
 //        startActivity(TestActivity.class);
 
-        testShowDialog();
+//        testShowDialog();
+
+    }
+
+    private void testNavigationBar() {
+//        ViewGroup viewGroup = findViewById(R.id.main_root);
+//        DefaultNavigationBar defaultNavigationBar = new DefaultNavigationBar.Builder(this, viewGroup).create();
     }
 
     private void testShowDialog() {
