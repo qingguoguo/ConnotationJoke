@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
@@ -17,6 +18,7 @@ import com.connotationjoke.qingguoguo.baselibrary.ioc.OnClick;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.ViewById;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.ToastUtils;
+import com.connotationjoke.qingguoguo.baselibrary.view.customdialog.AlertDialog;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -103,10 +105,33 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 //        ToastUtils.showShort("修复前:" + 0);
 //        int i = 2 / 0;
 //        startActivity(TestActivity.class);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-//                .setCancelable(false)
-//                .setContentView(R.layout.activity_test)
-//                .setOnClickListener().show();
+
+        testShowDialog();
+    }
+
+    private void testShowDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setContentView(R.layout.detail_comment_dialog)
+                .setText(R.id.submit_btn, "微博分享嘎嘎")
+                .setOnClickListener(R.id.submit_btn, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ToastUtils.showShort("微博分享嘎嘎");
+                    }
+                })
+                .addDefaultAnimation()
+                .fullWidth()
+                .fromBottom(true)
+                .show();
+
+        final EditText view = dialog.findView(R.id.comment_editor);
+        dialog.setOnClickListener(R.id.account_icon_weibo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.showShort(view.getText().toString());
+            }
+        });
     }
 
     private void testAliAndFix() {

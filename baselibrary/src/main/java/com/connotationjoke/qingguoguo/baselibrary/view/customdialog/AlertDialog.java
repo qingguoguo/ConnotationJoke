@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.connotationjoke.qingguoguo.baselibrary.R;
 
@@ -13,7 +15,6 @@ import com.connotationjoke.qingguoguo.baselibrary.R;
  * @datetime ：2018/3/30
  * @describe :自定义 万能 AlertDialog
  */
-
 public class AlertDialog extends Dialog {
     private CusAlertController mAlert;
 
@@ -22,12 +23,24 @@ public class AlertDialog extends Dialog {
         mAlert = new CusAlertController(this, this.getWindow());
     }
 
+    public void setText(int viewId, CharSequence charSequence) {
+        mAlert.setText(viewId,charSequence);
+    }
+
+    public <T extends View> T findView(int viewId) {
+        return mAlert.findView(viewId);
+    }
+
+    public void setOnClickListener(int viewId, View.OnClickListener onClickListener) {
+        mAlert.setOnClickListener(viewId,onClickListener);
+    }
+
     public static class Builder {
 
         private CusAlertController.AlertParams P;
 
         public Builder(Context context) {
-            this(context, R.style.Theme_AppCompat_Dialog);
+            this(context, R.style.dialog);
         }
 
         public Builder(Context context, int themeResId) {
@@ -46,8 +59,12 @@ public class AlertDialog extends Dialog {
             if (P.mCancelable) {
                 dialog.setCanceledOnTouchOutside(true);
             }
-            dialog.setOnCancelListener(P.mOnCancelListener);
-            dialog.setOnDismissListener(P.mOnDismissListener);
+            if (P.mOnCancelListener != null) {
+                dialog.setOnCancelListener(P.mOnCancelListener);
+            }
+            if (P.mOnDismissListener != null) {
+                dialog.setOnDismissListener(P.mOnDismissListener);
+            }
             if (P.mOnKeyListener != null) {
                 dialog.setOnKeyListener(P.mOnKeyListener);
             }
@@ -110,8 +127,39 @@ public class AlertDialog extends Dialog {
             return this;
         }
 
-        public void show() {
+        public Builder fullWidth() {
+            P.mWidth = ViewGroup.LayoutParams.MATCH_PARENT;
+            return this;
+        }
 
+        public Builder fromBottom(boolean isAnimation) {
+            if (isAnimation) {
+                P.mAnimations = R.style.dialog_from_bottom_anim;
+            }
+            P.mGravity = Gravity.BOTTOM;
+            return this;
+        }
+
+        public Builder setWidthAndHeight(int windth, int height) {
+            P.mWidth = windth;
+            P.mHeight = height;
+            return this;
+        }
+
+        public Builder addDefaultAnimation() {
+            P.mAnimations = R.style.dialog_scale_anim;
+            return this;
+        }
+
+        public Builder addAnimations(int styleAnimation) {
+            P.mAnimations = styleAnimation;
+            return this;
+        }
+
+        public AlertDialog show() {
+            AlertDialog dialog = create();
+            dialog.show();
+            return dialog;
         }
     }
 }
