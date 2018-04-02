@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
+
 /**
  * 作者:qingguoguo
  * 创建日期：2018/4/1 on 19:47
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 public abstract class AbsNavigationBar<P extends AbsNavigationBar.Builder.AbsNavigationBarParams> implements INavigationBar {
 
+    private static final String TAG = "AbsNavigationBar";
     private P mBarParams;
     private View mNavigationView;
 
@@ -53,18 +56,17 @@ public abstract class AbsNavigationBar<P extends AbsNavigationBar.Builder.AbsNav
     private void createAndBindView() {
         //1.创建View
         if (mBarParams.mParent == null) {
-            //获取Activity的根布局 AppCompatActivity
-            ViewGroup viewGroup = ((Activity) (mBarParams.mContext))
-                    .findViewById(android.R.id.content);
+            //获取Activity的根布局 这种方式activity布局不能是RelativeLayout
+//            ViewGroup viewGroup = ((Activity) (mBarParams.mContext))
+//                    .findViewById(android.R.id.content);
+
+            //获取的是PhoneWindow DecorView
+            ViewGroup viewGroup = (ViewGroup) ((Activity) (mBarParams.mContext))
+                    .getWindow().getDecorView();
             mBarParams.mParent = (ViewGroup) viewGroup.getChildAt(0);
         }
 
-//        if (mBarParams.mParent == null) {
-//            //获取Activity的根布局 AppActivity
-//            mBarParams.mParent = (ViewGroup) ((Activity) (mBarParams.mContext))
-//                    .getWindow().getDecorView();
-//        }
-
+        LogUtils.i(TAG, "android.R.id.content view:" + mBarParams.mParent);
         mNavigationView = LayoutInflater.from(mBarParams.mContext)
                 .inflate(bindLayoutResId(), mBarParams.mParent, false);
         //2.添加

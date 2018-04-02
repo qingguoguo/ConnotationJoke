@@ -13,7 +13,8 @@ import com.connotationjoke.qingguoguo.baselibrary.view.customdialog.navigationba
  * 描述: 默认的 NavigationBar
  */
 
-public class DefaultNavigationBar extends AbsNavigationBar<DefaultNavigationBar.Builder.DefaultNavigationParams> {
+public class DefaultNavigationBar<D extends DefaultNavigationBar.Builder.DefaultNavigationParams> extends
+        AbsNavigationBar<DefaultNavigationBar.Builder.DefaultNavigationParams> {
 
     public DefaultNavigationBar(Builder.DefaultNavigationParams barParams) {
         super(barParams);
@@ -43,7 +44,7 @@ public class DefaultNavigationBar extends AbsNavigationBar<DefaultNavigationBar.
         }
 
         public Builder(Context context) {
-            super(context, null);
+            this(context, null);
         }
 
         //1.设置所有效果
@@ -70,26 +71,33 @@ public class DefaultNavigationBar extends AbsNavigationBar<DefaultNavigationBar.
             return this;
         }
 
+        public DefaultNavigationBar.Builder setRightImageRes(int imageRes) {
+            P.mRightImageRes = imageRes;
+            return this;
+        }
+
         @Override
         public DefaultNavigationBar create() {
-            DefaultNavigationBar defaultNavigationBar = new DefaultNavigationBar(P);
-            return defaultNavigationBar;
+            return new DefaultNavigationBar(P);
         }
 
         public static class DefaultNavigationParams extends AbsNavigationBarParams {
             //2.放置所有效果
+
             public String mTitle;
             public String mRightText;
             public View.OnClickListener mRightClickListener;
-            public View.OnClickListener mLeftClickListener =new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((Activity) mContext).finish();
-                }
-            };
+            public View.OnClickListener mLeftClickListener;
+            public int mRightImageRes;
 
             public DefaultNavigationParams(Context context, ViewGroup parent) {
                 super(context, parent);
+                mLeftClickListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((Activity) mContext).finish();
+                    }
+                };
             }
         }
     }
