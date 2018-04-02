@@ -24,7 +24,7 @@ public interface EngineCallBack {
      */
     void onError(Exception e);
 
-    public final EngineCallBack DEFAULT_CALLBACK = new EngineCallBack() {
+    EngineCallBack DEFAULT_CALLBACK = new EngineCallBack() {
         @Override
         public void onSuccess(String result) {
         }
