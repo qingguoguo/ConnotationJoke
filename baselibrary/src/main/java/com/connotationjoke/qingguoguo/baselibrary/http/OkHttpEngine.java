@@ -29,6 +29,8 @@ import okhttp3.Response;
 public class OkHttpEngine implements IHttpEngine {
     private static final java.lang.String TAG = "OkHttpEngine";
     private static OkHttpClient mOkHttpClient = new OkHttpClient();
+    private Call mCall;
+    private EngineCallBack mEngineCallBack;
 
     @Override
     public void get(Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
@@ -38,8 +40,9 @@ public class OkHttpEngine implements IHttpEngine {
         Request.Builder requestBuilder = new Request.Builder().url(url).tag(context);
         //可以省略，默认是GET请求
         Request request = requestBuilder.build();
-
-        mOkHttpClient.newCall(request).enqueue(new Callback() {
+        mEngineCallBack = callBack;
+        mCall = mOkHttpClient.newCall(request);
+        mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 callBack.onError(e);
@@ -58,6 +61,7 @@ public class OkHttpEngine implements IHttpEngine {
     @Override
     public void post(Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
         url = HttpUtils.jointParams(url, params);
+        mEngineCallBack = callBack;
         LogUtils.i(TAG, "Post请求路径：" + url);
         // 了解 Okhttp
         RequestBody requestBody = appendBody(params);
@@ -67,8 +71,8 @@ public class OkHttpEngine implements IHttpEngine {
                 .post(requestBody)
                 .build();
 
-        mOkHttpClient.newCall(request).enqueue(
-                new Callback() {
+        mCall = mOkHttpClient.newCall(request);
+        mCall.enqueue(new Callback() {
                     @Override
                     public void onFailure(okhttp3.Call call, IOException e) {
                         callBack.onError(e);
@@ -141,6 +145,7 @@ public class OkHttpEngine implements IHttpEngine {
 
     @Override
     public void cancel() {
-
+        mCall.cancel();
+        mEngineCallBack.onCancel();
     }
 }

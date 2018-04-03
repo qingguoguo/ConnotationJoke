@@ -27,7 +27,7 @@ public class XUtilsEngine implements IHttpEngine {
     private HttpHandler mHttpHandler;
 
     @Override
-    public void get(Context context, String url, Map<String, Object> params, EngineCallBack callBack) {
+    public void get(Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
         //发送请求 设置超时
         HttpUtils httpUtils = new HttpUtils(15000);
         httpUtils.configCurrentHttpCacheExpiry(0);
@@ -55,6 +55,7 @@ public class XUtilsEngine implements IHttpEngine {
             @Override
             public void onCancelled() {
                 super.onCancelled();
+                callBack.onCancel();
             }
 
             @Override

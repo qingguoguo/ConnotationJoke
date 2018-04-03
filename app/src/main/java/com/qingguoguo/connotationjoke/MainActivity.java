@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
 import com.connotationjoke.qingguoguo.baselibrary.fixbug.FixDexManager;
 import com.connotationjoke.qingguoguo.baselibrary.http.HttpUtils;
-import com.connotationjoke.qingguoguo.baselibrary.http.XUtilsEngine;
+import com.connotationjoke.qingguoguo.baselibrary.http.OkHttpEngine;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.CheckNet;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.OnClick;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.ViewById;
@@ -117,7 +117,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
         HttpUtils.with(this)
                 .url("http://is.snssdk.com/2/essay/discovery/v3/")
                 .addParam("iid", "6152551759")
-                .exchangeEngine(new XUtilsEngine())
+                .exchangeEngine(new OkHttpEngine())
                 .addParam("aid", "7")
                 .get()
                 .execute(new HttpCallBack<UserBean>() {
@@ -129,6 +129,11 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
                     @Override
                     public void onError(Exception e) {
 
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        LogUtils.i(TAG,"onCancel");
                     }
                 });
     }
