@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
 import com.connotationjoke.qingguoguo.baselibrary.fixbug.FixDexManager;
+import com.connotationjoke.qingguoguo.baselibrary.http.HttpUtils;
+import com.connotationjoke.qingguoguo.baselibrary.http.XUtilsEngine;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.CheckNet;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.OnClick;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.ViewById;
@@ -27,6 +29,7 @@ import java.io.IOException;
 
 import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
 import connotationjoke.qingguoguo.com.framelibrary.DefaultNavigationBar;
+import connotationjoke.qingguoguo.com.framelibrary.HttpCallBack;
 
 /**
  * @author :qingguoguo
@@ -111,6 +114,23 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 
 //        testShowDialog();
 
+        HttpUtils.with(this)
+                .url("http://is.snssdk.com/2/essay/discovery/v3/")
+                .addParam("iid", "6152551759")
+                .exchangeEngine(new XUtilsEngine())
+                .addParam("aid", "7")
+                .get()
+                .execute(new HttpCallBack<UserBean>() {
+                    @Override
+                    public void onSuccess(UserBean userBean) {
+                        LogUtils.i(TAG,userBean.getData().getCategories().getName());
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
     }
 
     private void testNavigationBar() {

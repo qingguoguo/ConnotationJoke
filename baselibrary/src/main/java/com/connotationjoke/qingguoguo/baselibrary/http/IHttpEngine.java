@@ -1,11 +1,13 @@
 package com.connotationjoke.qingguoguo.baselibrary.http;
 
+import android.content.Context;
+
 import java.util.Map;
 
 /**
  * @author :qingguoguo
  * @datetime ：2018/4/2
- * @describe : 定义网络请求的规范
+ * @describe : 定义网络请求的规范，相关方法
  */
 
 public interface IHttpEngine {
@@ -17,7 +19,7 @@ public interface IHttpEngine {
      * @param params
      * @param callBack
      */
-    void get(String url, Map<String, Object> params, EngineCallBack callBack);
+    void get(Context context, String url, Map<String, Object> params, EngineCallBack callBack);
 
     /**
      * post请求
@@ -26,8 +28,12 @@ public interface IHttpEngine {
      * @param params
      * @param callBack
      */
-    void post(String url, Map<String, Object> params, EngineCallBack callBack);
+    void post(Context context,String url, Map<String, Object> params, EngineCallBack callBack);
 
+    /**
+     * 取消网络请求
+     */
+    void cancel();
 
     //下载文件
     //上传文件

@@ -2,13 +2,15 @@ package com.connotationjoke.qingguoguo.baselibrary.http;
 
 import android.content.Context;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author :qingguoguo
  * @datetime ：2018/4/2
- * @describe :
+ * @describe :封装网络请求工具类 底层封装，baselibarary不写业务逻辑代码
  */
 
 public class HttpUtils {
@@ -21,21 +23,46 @@ public class HttpUtils {
     private Context mContext;
     private Map<String, Object> mParams;
 
-    private static IHttpEngine mIHttpEngine = new DefaultHttpEngine();
+    /**
+     * 默认网络请求框架用 OkHttp
+     */
+    private static IHttpEngine mIHttpEngine = new OkHttpEngine();
 
+    /**
+     * 构造方法 private，推荐使用with()方法
+     *
+     * @param context
+     */
     private HttpUtils(Context context) {
         mContext = context;
         mParams = new HashMap<>();
     }
 
+    /**
+     * 可在application中初始化网络请求框架
+     *
+     * @param httpEngine
+     */
     public static void initEngine(IHttpEngine httpEngine) {
         mIHttpEngine = httpEngine;
     }
 
-    public void exchangeEngine(IHttpEngine httpEngine) {
+    /**
+     * 可在某个网络请求中更改网络请求框架
+     *
+     * @param httpEngine
+     */
+    public HttpUtils exchangeEngine(IHttpEngine httpEngine) {
         HttpUtils.mIHttpEngine = httpEngine;
+        return this;
     }
 
+    /**
+     * 创建HttpUtils
+     *
+     * @param context
+     * @return
+     */
     public static HttpUtils with(Context context) {
         return new HttpUtils(context);
     }
@@ -56,7 +83,7 @@ public class HttpUtils {
     }
 
     /**
-     * 添加参数
+     * 添加多个参数
      *
      * @param params
      * @return
@@ -66,15 +93,28 @@ public class HttpUtils {
         return this;
     }
 
+    /**
+     * 添加一个参数
+     *
+     * @param key
+     * @param value
+     * @return
+     */
     public HttpUtils addParam(String key, Object value) {
         mParams.put(key, value);
         return this;
     }
 
+    /**
+     * 执行请求，传入 EngineCallBack
+     *
+     * @param callBack
+     */
     public void execute(EngineCallBack callBack) {
         if (callBack == null) {
             callBack = EngineCallBack.DEFAULT_CALLBACK;
         }
+        callBack.onPreExecute(mContext, mParams);
 
         //执行网络请求方法判断
         if (mType == POST_TYPE) {
@@ -86,15 +126,77 @@ public class HttpUtils {
         }
     }
 
+    /**
+     * 传默认的 EngineCallBack
+     */
     public void execute() {
         execute(null);
     }
 
+    /**
+     * get()方法 实际调用的是网络框架的请求方法
+     *
+     * @param url
+     * @param params
+     * @param callBack
+     */
     private void get(String url, Map<String, Object> params, EngineCallBack callBack) {
-        mIHttpEngine.get(url, params, callBack);
+        mIHttpEngine.get(mContext, url, params, callBack);
     }
 
+    /**
+     * post()方法 实际调用的是网络框架的请求方法
+     *
+     * @param url
+     * @param params
+     * @param callBack
+     */
     private void post(String url, Map<String, Object> params, EngineCallBack callBack) {
-        mIHttpEngine.post(url, params, callBack);
+        mIHttpEngine.post(mContext, url, params, callBack);
+    }
+
+    /**
+     * 取消网络请求
+     */
+    public void cancel() {
+        mIHttpEngine.cancel();
+    }
+
+    /**
+     * 拼接参数
+     *
+     * @param url
+     * @param params
+     * @return
+     */
+    public static String jointParams(String url, Map<String, Object> params) {
+        if (params == null || params.size() <= 0) {
+            return url;
+        }
+
+        StringBuffer stringBuffer = new StringBuffer(url);
+        if (!url.contains("?")) {
+            stringBuffer.append("?");
+        } else {
+            if (!url.endsWith("?")) {
+                stringBuffer.append("&");
+            }
+        }
+
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            stringBuffer.append(entry.getKey() + "=" + entry.getValue() + "&");
+        }
+
+        stringBuffer.deleteCharAt(stringBuffer.length() - 1);
+        return stringBuffer.toString();
+    }
+
+    /**
+     * 解析一个类上面的class信息
+     */
+    public static Class<?> analysisClazzInfo(Object object) {
+        Type genType = object.getClass().getGenericSuperclass();
+        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+        return (Class<?>) params[0];
     }
 }
