@@ -55,5 +55,10 @@ public abstract class HttpCallBack<T> implements EngineCallBack {
     protected void onPreExecute() {
     }
 
+    /**
+     * 泛型，直接返回可操作的对象
+     *
+     * @param t
+     */
     public abstract void onSuccess(T t);
 }
