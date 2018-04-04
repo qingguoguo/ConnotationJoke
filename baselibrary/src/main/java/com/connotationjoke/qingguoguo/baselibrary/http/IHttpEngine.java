@@ -19,7 +19,7 @@ public interface IHttpEngine {
      * @param params
      * @param callBack
      */
-    void get(Context context, String url, Map<String, Object> params, EngineCallBack callBack);
+    void get(boolean cache, Context context, String url, Map<String, Object> params, EngineCallBack callBack);
 
     /**
      * post请求
@@ -28,7 +28,7 @@ public interface IHttpEngine {
      * @param params
      * @param callBack
      */
-    void post(Context context,String url, Map<String, Object> params, EngineCallBack callBack);
+    void post(boolean cache,Context context, String url, Map<String, Object> params, EngineCallBack callBack);
 
     /**
      * 取消网络请求

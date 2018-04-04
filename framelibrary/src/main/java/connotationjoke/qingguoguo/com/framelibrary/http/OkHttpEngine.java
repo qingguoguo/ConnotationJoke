@@ -1,7 +1,11 @@
-package com.connotationjoke.qingguoguo.baselibrary.http;
+package connotationjoke.qingguoguo.com.framelibrary.http;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import com.connotationjoke.qingguoguo.baselibrary.http.EngineCallBack;
+import com.connotationjoke.qingguoguo.baselibrary.http.HttpUtils;
+import com.connotationjoke.qingguoguo.baselibrary.http.IHttpEngine;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 
 import java.io.File;
@@ -11,6 +15,7 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
+import connotationjoke.qingguoguo.com.framelibrary.cache.CacheDataUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -33,9 +38,18 @@ public class OkHttpEngine implements IHttpEngine {
     private EngineCallBack mEngineCallBack;
 
     @Override
-    public void get(Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
-        url = HttpUtils.jointParams(url, params);
+    public void get(final boolean cache, Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
+        final String fUrl = HttpUtils.jointParams(url, params);
         LogUtils.i(TAG, "Get请求路径：" + url);
+        //1.判断是否需要缓存
+        if (cache) {
+            //2.是否有缓存数据
+            String cacheResultJson = CacheDataUtil.getCacheResultJson(fUrl);
+            if (!TextUtils.isEmpty(cacheResultJson)) {
+                LogUtils.i(TAG, "请求读到缓存先回调出去");
+                callBack.onSuccess(cacheResultJson);
+            }
+        }
 
         Request.Builder requestBuilder = new Request.Builder().url(url).tag(context);
         //可以省略，默认是GET请求
@@ -52,14 +66,23 @@ public class OkHttpEngine implements IHttpEngine {
             public void onResponse(Call call, Response response) throws IOException {
                 String resultJson = response.body().string();
                 LogUtils.i(TAG, "Get返回结果：" + resultJson);
-                callBack.onSuccess(resultJson);
+
+                //网络请求返回来的结果，与缓存比较，如果不相同就返回，并添加到缓存中
+                String cacheResultJson = CacheDataUtil.getCacheResultJson(fUrl);
+                if (!TextUtils.isEmpty(cacheResultJson) && !cacheResultJson.equals(resultJson)) {
+                    LogUtils.i(TAG, "Get返回结果和缓存不一致：" + resultJson);
+                    callBack.onSuccess(resultJson);
+                }
+
+                if (cache) {
+                    CacheDataUtil.cacheData(fUrl, resultJson);
+                }
             }
         });
     }
 
-
     @Override
-    public void post(Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
+    public void post(boolean cache, Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
         url = HttpUtils.jointParams(url, params);
         mEngineCallBack = callBack;
         LogUtils.i(TAG, "Post请求路径：" + url);
@@ -73,18 +96,18 @@ public class OkHttpEngine implements IHttpEngine {
 
         mCall = mOkHttpClient.newCall(request);
         mCall.enqueue(new Callback() {
-                    @Override
-                    public void onFailure(okhttp3.Call call, IOException e) {
-                        callBack.onError(e);
-                    }
+                          @Override
+                          public void onFailure(okhttp3.Call call, IOException e) {
+                              callBack.onError(e);
+                          }
 
-                    @Override
-                    public void onResponse(okhttp3.Call call, Response response) throws IOException {
-                        // 这个 两个回掉方法都不是在主线程中
-                        String result = response.body().string();
-                        callBack.onSuccess(result);
-                    }
-                }
+                          @Override
+                          public void onResponse(okhttp3.Call call, Response response) throws IOException {
+                              // 这个 两个回掉方法都不是在主线程中
+                              String result = response.body().string();
+                              callBack.onSuccess(result);
+                          }
+                      }
         );
     }
 

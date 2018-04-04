@@ -11,6 +11,8 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+import connotationjoke.qingguoguo.com.framelibrary.db.curd.QuerySupport;
+
 /**
  * @author :qingguoguo
  * @datetime ：2018/4/4
@@ -20,13 +22,13 @@ import java.util.Map;
 public class DaoSupport<T> implements IDaoSupport<T> {
     private static final String TAG = "DaoSupport";
     private SQLiteDatabase mSQLiteDatabase;
-    private Class<?> mClazz;
+    private Class<T> mClazz;
 
     private static final Map<String, Method> mPutMethod = new ArrayMap<>();
     private final Object[] mPutMethodArgs = new Object[2];
 
     @Override
-    public void init(SQLiteDatabase SQLiteDatabase, Class<?> clazz) {
+    public void init(SQLiteDatabase SQLiteDatabase, Class<T> clazz) {
         mSQLiteDatabase = SQLiteDatabase;
         mClazz = clazz;
 
@@ -81,10 +83,10 @@ public class DaoSupport<T> implements IDaoSupport<T> {
             try {
                 mPutMethodArgs[0] = field.getName();
                 mPutMethodArgs[1] = field.get(obj);
-                String fieldTypeName= field.getType().getName();
+                String fieldTypeName = field.getType().getName();
                 //从缓存中获取Method
                 Method putMethod = mPutMethod.get(fieldTypeName);
-                if (putMethod== null) {
+                if (putMethod == null) {
                     putMethod = contentValuesClass.getDeclaredMethod("put", String.class, mPutMethodArgs[1].getClass());
                     mPutMethod.put(fieldTypeName, putMethod);
                 }
@@ -97,5 +99,32 @@ public class DaoSupport<T> implements IDaoSupport<T> {
             }
         }
         return values;
+    }
+
+    /**
+     * 删除
+     */
+    @Override
+    public int delete(String whereClause, String[] whereArgs) {
+        return mSQLiteDatabase.delete(DaoUtil.getTableName(mClazz), whereClause, whereArgs);
+    }
+
+    /**
+     * 更新
+     */
+    @Override
+    public int update(T obj, String whereClause, String... whereArgs) {
+        ContentValues values = getContentValuesByObj(obj);
+        return mSQLiteDatabase.update(DaoUtil.getTableName(mClazz),
+                values, whereClause, whereArgs);
+    }
+
+    private QuerySupport<T> mQuerySupport;
+    @Override
+    public QuerySupport<T> querySupport() {
+        if(mQuerySupport == null){
+            mQuerySupport = new QuerySupport<T>(mSQLiteDatabase,mClazz);
+        }
+        return mQuerySupport;
     }
 }

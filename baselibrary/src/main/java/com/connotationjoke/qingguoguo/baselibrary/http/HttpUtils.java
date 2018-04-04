@@ -21,12 +21,13 @@ public class HttpUtils {
     private String mUrl;
     private int mType;
     private Context mContext;
+    private boolean mCache;
     private Map<String, Object> mParams;
 
     /**
      * 默认网络请求框架用 OkHttp
      */
-    private static IHttpEngine mIHttpEngine = new OkHttpEngine();
+    private static IHttpEngine mIHttpEngine = null;
 
     /**
      * 构造方法 private，推荐使用with()方法
@@ -105,6 +106,11 @@ public class HttpUtils {
         return this;
     }
 
+    public HttpUtils cache(boolean isCache) {
+        mCache = isCache;
+        return this;
+    }
+
     /**
      * 执行请求，传入 EngineCallBack
      *
@@ -141,7 +147,7 @@ public class HttpUtils {
      * @param callBack
      */
     private void get(String url, Map<String, Object> params, EngineCallBack callBack) {
-        mIHttpEngine.get(mContext, url, params, callBack);
+        mIHttpEngine.get(mCache, mContext, url, params, callBack);
     }
 
     /**
@@ -152,7 +158,7 @@ public class HttpUtils {
      * @param callBack
      */
     private void post(String url, Map<String, Object> params, EngineCallBack callBack) {
-        mIHttpEngine.post(mContext, url, params, callBack);
+        mIHttpEngine.post(mCache, mContext, url, params, callBack);
     }
 
     /**

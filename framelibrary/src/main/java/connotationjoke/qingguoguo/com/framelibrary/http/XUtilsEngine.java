@@ -1,7 +1,9 @@
-package com.connotationjoke.qingguoguo.baselibrary.http;
+package connotationjoke.qingguoguo.com.framelibrary.http;
 
 import android.content.Context;
 
+import com.connotationjoke.qingguoguo.baselibrary.http.EngineCallBack;
+import com.connotationjoke.qingguoguo.baselibrary.http.IHttpEngine;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
@@ -22,12 +24,12 @@ import java.util.Map;
  * @describe :
  */
 
-public class XUtilsEngine implements IHttpEngine {
+public abstract class XUtilsEngine implements IHttpEngine {
     private static final String TAG = "XUtilsEngine";
     private HttpHandler mHttpHandler;
 
     @Override
-    public void get(Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
+    public void get(final boolean cache, Context context, String url, Map<String, Object> params, final EngineCallBack callBack) {
         //发送请求 设置超时
         HttpUtils httpUtils = new HttpUtils(15000);
         httpUtils.configCurrentHttpCacheExpiry(0);
@@ -77,7 +79,7 @@ public class XUtilsEngine implements IHttpEngine {
     }
 
     @Override
-    public void post(Context context, String url, Map<String, Object> params, EngineCallBack callBack) {
+    public void post(final boolean cache,Context context, String url, Map<String, Object> params, EngineCallBack callBack) {
 
     }
 

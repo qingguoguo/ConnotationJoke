@@ -1,4 +1,4 @@
-package com.connotationjoke.qingguoguo.baselibrary.http;
+package connotationjoke.qingguoguo.com.framelibrary.http;
 
 /**
  * @author :qingguoguo

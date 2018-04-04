@@ -6,10 +6,13 @@ import android.util.Log;
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
 import com.connotationjoke.qingguoguo.baselibrary.fixbug.FixDexManager;
+import com.connotationjoke.qingguoguo.baselibrary.http.HttpUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.PhoneSystemUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.Utils;
 import com.squareup.leakcanary.LeakCanary;
+
+import connotationjoke.qingguoguo.com.framelibrary.http.OkHttpEngine;
 
 /**
  * 作者:qingguoguo
@@ -35,6 +38,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         instance = this;
         super.onCreate();
+        HttpUtils.initEngine(new OkHttpEngine());
         //初始化异常处理器
         ExceptionCrashHandler.getInstace().init(this);
         initLeakCanary();

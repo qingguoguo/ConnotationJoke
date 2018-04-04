@@ -4,6 +4,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.List;
 
+import connotationjoke.qingguoguo.com.framelibrary.db.curd.QuerySupport;
+
 /**
  * @author :qingguoguo
  * @datetime ：2018/4/4
@@ -12,7 +14,7 @@ import java.util.List;
 
 public interface IDaoSupport<T> {
 
-    void init(SQLiteDatabase SQLiteDatabase, Class<?> clazz);
+    void init(SQLiteDatabase SQLiteDatabase, Class<T> clazz);
 
     /**
      * 插入数据
@@ -28,4 +30,29 @@ public interface IDaoSupport<T> {
      * @param datas
      */
     void insert(List<T> datas);
+
+    /**
+     * 获取专门查询的支持类
+     */
+    QuerySupport<T> querySupport();
+
+
+    /**
+     * delete
+     *
+     * @param whereClause
+     * @param whereArgs
+     * @return
+     */
+    int delete(String whereClause, String... whereArgs);
+
+    /**
+     * update
+     *
+     * @param obj
+     * @param whereClause
+     * @param whereArgs
+     * @return
+     */
+    int update(T obj, String whereClause, String... whereArgs);
 }

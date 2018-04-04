@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
 import com.connotationjoke.qingguoguo.baselibrary.fixbug.FixDexManager;
+import com.connotationjoke.qingguoguo.baselibrary.http.HttpUtils;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.CheckNet;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.OnClick;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.ViewById;
@@ -31,6 +32,7 @@ import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
 import connotationjoke.qingguoguo.com.framelibrary.DefaultNavigationBar;
 import connotationjoke.qingguoguo.com.framelibrary.db.DaoSupportFactory;
 import connotationjoke.qingguoguo.com.framelibrary.db.IDaoSupport;
+import connotationjoke.qingguoguo.com.framelibrary.http.HttpCallBack;
 
 /**
  * @author :qingguoguo
@@ -114,29 +116,8 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 //        startActivity(TestActivity.class);
 
 //        testShowDialog();
+        testHttp();
 
-//        HttpUtils.with(this)
-//                .url("http://is.snssdk.com/2/essay/discovery/v3/")
-//                .addParam("iid", "6152551759")
-//                .exchangeEngine(new OkHttpEngine())
-//                .addParam("aid", "7")
-//                .get()
-//                .execute(new HttpCallBack<UserBean>() {
-//                    @Override
-//                    public void onSuccess(UserBean userBean) {
-//                        LogUtils.i(TAG,userBean.getData().getCategories().getName());
-//                    }
-//
-//                    @Override
-//                    public void onError(Exception e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancel() {
-//                        LogUtils.i(TAG,"onCancel");
-//                    }
-//                });
         IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
         List<Person> list = new ArrayList<>();
         for (int i = 0; i < 5000; i++) {
@@ -146,6 +127,31 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
         dao.insert(list);
         long endTime = System.currentTimeMillis();
         LogUtils.i(TAG, "插入数据时间 ：" + (endTime - startTime));
+    }
+
+    private void testHttp() {
+        HttpUtils.with(this)
+                .url("http://is.snssdk.com/2/essay/discovery/v3/")
+                .addParam("iid", "6152551759")
+                .addParam("aid", "7")
+                .cache(true)
+                .get()
+                .execute(new HttpCallBack<UserBean>() {
+                    @Override
+                    public void onSuccess(UserBean userBean) {
+                        LogUtils.i(TAG,userBean.getData().getCategories().getName());
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        LogUtils.i(TAG,"onCancel");
+                    }
+                });
     }
 
     private void testNavigationBar() {
