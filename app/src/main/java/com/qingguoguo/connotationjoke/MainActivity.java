@@ -137,7 +137,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 //                        LogUtils.i(TAG,"onCancel");
 //                    }
 //                });
-        IDaoSupport dao = DaoSupportFactory.getFactory().getDao(Person.class);
+        IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
         List<Person> list = new ArrayList<>();
         for (int i = 0; i < 5000; i++) {
             list.add(new Person("qgg", 20 + i));
