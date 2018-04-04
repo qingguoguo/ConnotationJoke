@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
 import com.connotationjoke.qingguoguo.baselibrary.fixbug.FixDexManager;
-import com.connotationjoke.qingguoguo.baselibrary.http.HttpUtils;
-import com.connotationjoke.qingguoguo.baselibrary.http.OkHttpEngine;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.CheckNet;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.OnClick;
 import com.connotationjoke.qingguoguo.baselibrary.ioc.ViewById;
@@ -26,10 +24,13 @@ import com.connotationjoke.qingguoguo.baselibrary.view.customdialog.AlertDialog;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
 import connotationjoke.qingguoguo.com.framelibrary.DefaultNavigationBar;
-import connotationjoke.qingguoguo.com.framelibrary.HttpCallBack;
+import connotationjoke.qingguoguo.com.framelibrary.db.DaoSupportFactory;
+import connotationjoke.qingguoguo.com.framelibrary.db.IDaoSupport;
 
 /**
  * @author :qingguoguo
@@ -114,28 +115,37 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 
 //        testShowDialog();
 
-        HttpUtils.with(this)
-                .url("http://is.snssdk.com/2/essay/discovery/v3/")
-                .addParam("iid", "6152551759")
-                .exchangeEngine(new OkHttpEngine())
-                .addParam("aid", "7")
-                .get()
-                .execute(new HttpCallBack<UserBean>() {
-                    @Override
-                    public void onSuccess(UserBean userBean) {
-                        LogUtils.i(TAG,userBean.getData().getCategories().getName());
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        LogUtils.i(TAG,"onCancel");
-                    }
-                });
+//        HttpUtils.with(this)
+//                .url("http://is.snssdk.com/2/essay/discovery/v3/")
+//                .addParam("iid", "6152551759")
+//                .exchangeEngine(new OkHttpEngine())
+//                .addParam("aid", "7")
+//                .get()
+//                .execute(new HttpCallBack<UserBean>() {
+//                    @Override
+//                    public void onSuccess(UserBean userBean) {
+//                        LogUtils.i(TAG,userBean.getData().getCategories().getName());
+//                    }
+//
+//                    @Override
+//                    public void onError(Exception e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancel() {
+//                        LogUtils.i(TAG,"onCancel");
+//                    }
+//                });
+        IDaoSupport dao = DaoSupportFactory.getFactory().getDao(Person.class);
+        List<Person> list = new ArrayList<>();
+        for (int i = 0; i < 5000; i++) {
+            list.add(new Person("qgg", 20 + i));
+        }
+        long startTime = System.currentTimeMillis();
+        dao.insert(list);
+        long endTime = System.currentTimeMillis();
+        LogUtils.i(TAG, "插入数据时间 ：" + (endTime - startTime));
     }
 
     private void testNavigationBar() {

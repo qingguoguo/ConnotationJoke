@@ -192,9 +192,13 @@ public class HttpUtils {
     }
 
     /**
-     * 解析一个类上面的class信息
+     * 解析一个类上面的泛型类信息
      */
     public static Class<?> analysisClazzInfo(Object object) {
+        //getGenericSuperclass()获得带有泛型的父类
+        //Type是 Java 编程语言中所有类型的公共高级接口。它们包括原始类型、参数化类型、数组类型、类型变量和基本类型
+        //ParameterizedType参数化类型，即泛型
+        //getActualTypeArguments获取参数化类型的数组，泛型可能有多个
         Type genType = object.getClass().getGenericSuperclass();
         Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
         return (Class<?>) params[0];
