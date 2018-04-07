@@ -41,6 +41,14 @@ public class DaoSupport<T> implements IDaoSupport<T> {
                 .append(" (id integer primary key autoincrement,");
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
+            /**忽略编译产生的属性**/
+            if (field.isSynthetic()) {
+                continue;
+            }
+            /**忽略serialVersionUID**/
+            if (field.getName().equals("serialVersionUID")) {
+                continue;
+            }
             field.setAccessible(true);
             sb.append(field.getName())
                     .append((DaoUtil.getColumnType(field.getType().getSimpleName())))
@@ -79,6 +87,14 @@ public class DaoSupport<T> implements IDaoSupport<T> {
 
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
+            /**忽略编译产生的属性**/
+            if (field.isSynthetic()) {
+                continue;
+            }
+            /**忽略serialVersionUID**/
+            if (field.getName().equals("serialVersionUID")) {
+                continue;
+            }
             field.setAccessible(true);
             try {
                 mPutMethodArgs[0] = field.getName();

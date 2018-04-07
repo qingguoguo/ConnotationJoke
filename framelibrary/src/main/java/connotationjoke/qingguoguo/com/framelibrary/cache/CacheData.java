@@ -1,5 +1,7 @@
 package connotationjoke.qingguoguo.com.framelibrary.cache;
 
+import java.io.Serializable;
+
 /**
  * @author :qingguoguo
  * @datetime ：2018/4/4
@@ -15,7 +17,7 @@ package connotationjoke.qingguoguo.com.framelibrary.cache;
  * 2.在网络引擎里面做缓存
  */
 
-public class CacheData {
+public class CacheData implements Serializable{
     private String mUrlKey;
     private String mJsonResult;
 

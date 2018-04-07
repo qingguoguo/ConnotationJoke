@@ -116,11 +116,11 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 //        startActivity(TestActivity.class);
 
 //        testShowDialog();
-        testHttp();
+        //testHttp();
 
         IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
         List<Person> list = new ArrayList<>();
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < 50; i++) {
             list.add(new Person("qgg", 20 + i));
         }
         long startTime = System.currentTimeMillis();
