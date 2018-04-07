@@ -77,7 +77,7 @@ public class QuerySupport<T> {
     public List<T> query() {
         Cursor cursor = mSQLiteDatabase.query(DaoUtil.getTableName(mClass), mQueryColumns, mQuerySelection,
                 mQuerySelectionArgs, mQueryGroupBy, mQueryHaving, mQueryOrderBy, mQueryLimit);
-        //clearQueryParams();
+        clearQueryParams();
         return cursorToList(cursor);
     }
 
