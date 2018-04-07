@@ -41,12 +41,8 @@ public class DaoSupport<T> implements IDaoSupport<T> {
                 .append(" (id integer primary key autoincrement,");
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            /**忽略编译产生的属性**/
-            if (field.isSynthetic()) {
-                continue;
-            }
-            /**忽略serialVersionUID**/
-            if (field.getName().equals("serialVersionUID")) {
+            /**忽略编译产生的属性 忽略serialVersionUID**/
+            if (field.isSynthetic() || field.getName().equals("serialVersionUID")) {
                 continue;
             }
             field.setAccessible(true);
@@ -87,14 +83,11 @@ public class DaoSupport<T> implements IDaoSupport<T> {
 
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
-            /**忽略编译产生的属性**/
-            if (field.isSynthetic()) {
+            /**忽略编译产生的属性 忽略serialVersionUID**/
+            if (field.isSynthetic() || field.getName().equals("serialVersionUID")) {
                 continue;
             }
-            /**忽略serialVersionUID**/
-            if (field.getName().equals("serialVersionUID")) {
-                continue;
-            }
+
             field.setAccessible(true);
             try {
                 mPutMethodArgs[0] = field.getName();
@@ -136,10 +129,11 @@ public class DaoSupport<T> implements IDaoSupport<T> {
     }
 
     private QuerySupport<T> mQuerySupport;
+
     @Override
     public QuerySupport<T> querySupport() {
-        if(mQuerySupport == null){
-            mQuerySupport = new QuerySupport<T>(mSQLiteDatabase,mClazz);
+        if (mQuerySupport == null) {
+            mQuerySupport = new QuerySupport<T>(mSQLiteDatabase, mClazz);
         }
         return mQuerySupport;
     }
