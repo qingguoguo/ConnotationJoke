@@ -16,7 +16,7 @@ import java.util.Map;
 public class HttpUtils {
 
     private final static int POST_TYPE = 0x0010;
-    private final static int GET_TYPE = 0x0011;
+    private final static int GET_TYPE = 0x0022;
 
     private String mUrl;
     private int mType;
