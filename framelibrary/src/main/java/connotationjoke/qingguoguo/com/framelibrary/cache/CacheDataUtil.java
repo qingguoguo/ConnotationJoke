@@ -7,6 +7,7 @@ import java.util.List;
 
 import connotationjoke.qingguoguo.com.framelibrary.db.DaoSupportFactory;
 import connotationjoke.qingguoguo.com.framelibrary.db.IDaoSupport;
+import connotationjoke.qingguoguo.com.framelibrary.db.curd.QuerySupport;
 
 /**
  * @author :qingguoguo
@@ -22,7 +23,8 @@ public class CacheDataUtil {
     public static String getCacheResultJson(String finalUrl) {
         final IDaoSupport<CacheData> dataDaoSupport = DaoSupportFactory.getFactory().getDao(CacheData.class);
         // 需要缓存，从数据库拿缓存
-        List<CacheData> cacheDatas = dataDaoSupport.querySupport().selection("mUrlKey = ?").selectionArgs(MD5Util.string2MD5(finalUrl)).query();
+        QuerySupport<CacheData> cacheDataQuerySupport = dataDaoSupport.querySupport();
+        List<CacheData> cacheDatas =cacheDataQuerySupport.selection("mUrlKey=?").selectionArgs(MD5Util.string2MD5(finalUrl)).query();
 
         if (cacheDatas.size() != 0) {
             //有缓存数据

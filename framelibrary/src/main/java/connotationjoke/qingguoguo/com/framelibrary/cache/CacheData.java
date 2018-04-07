@@ -21,13 +21,12 @@ public class CacheData implements Serializable{
     private String mUrlKey;
     private String mJsonResult;
 
+    public CacheData() {
+    }
+
     public CacheData(String urlToMD5, String jsonResult) {
         this.mUrlKey = urlToMD5;
         mJsonResult = jsonResult;
-    }
-
-    public String getUrlToMD5() {
-        return mUrlKey;
     }
 
     public String getJsonResult() {

@@ -116,8 +116,12 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 //        startActivity(TestActivity.class);
 
 //        testShowDialog();
-        //testHttp();
+        testHttp();
 
+        //testDao();
+    }
+
+    private void testDao() {
         IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
         List<Person> list = new ArrayList<>();
         for (int i = 0; i < 50; i++) {

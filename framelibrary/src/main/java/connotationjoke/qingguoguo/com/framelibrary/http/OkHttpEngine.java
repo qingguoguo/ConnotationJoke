@@ -68,12 +68,15 @@ public class OkHttpEngine implements IHttpEngine {
                 LogUtils.i(TAG, "Get返回结果：" + resultJson);
 
                 //网络请求返回来的结果，与缓存比较，如果不相同就返回，并添加到缓存中
-                String cacheResultJson = CacheDataUtil.getCacheResultJson(fUrl);
-                if (!TextUtils.isEmpty(cacheResultJson) && !cacheResultJson.equals(resultJson)) {
-                    LogUtils.i(TAG, "Get返回结果和缓存不一致：" + resultJson);
-                    callBack.onSuccess(resultJson);
+                if (cache) {
+                    String cacheResultJson = CacheDataUtil.getCacheResultJson(fUrl);
+                    if (!TextUtils.isEmpty(resultJson) && resultJson.equals(cacheResultJson)) {
+                        LogUtils.i(TAG, "Get返回结果和缓存一致：" + resultJson);
+                        return;
+                    }
                 }
-
+                callBack.onSuccess(resultJson);
+                LogUtils.i(TAG, "Get返回结果和缓存不一致：" + resultJson);
                 if (cache) {
                     CacheDataUtil.cacheData(fUrl, resultJson);
                 }
