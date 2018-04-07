@@ -116,12 +116,18 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 //        startActivity(TestActivity.class);
 
 //        testShowDialog();
-        testHttp();
-
-        //testDao();
+        //testHttp();
+        testInsert();
+        testQuery();
     }
 
-    private void testDao() {
+    private void testQuery() {
+        IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
+        List<Person> people = dao.querySupport().queryAll();
+        ToastUtils.showShort("数据库文件长度：" + people.size());
+    }
+
+    private void testInsert() {
         IDaoSupport<Person> dao = DaoSupportFactory.getFactory().getDao(Person.class);
         List<Person> list = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
@@ -143,7 +149,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
                 .execute(new HttpCallBack<UserBean>() {
                     @Override
                     public void onSuccess(UserBean userBean) {
-                        LogUtils.i(TAG,userBean.getData().getCategories().getName());
+                        LogUtils.i(TAG, userBean.getData().getCategories().getName());
                     }
 
                     @Override
@@ -153,7 +159,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 
                     @Override
                     public void onCancel() {
-                        LogUtils.i(TAG,"onCancel");
+                        LogUtils.i(TAG, "onCancel");
                     }
                 });
     }

@@ -124,8 +124,7 @@ public class DaoSupport<T> implements IDaoSupport<T> {
     @Override
     public int update(T obj, String whereClause, String... whereArgs) {
         ContentValues values = getContentValuesByObj(obj);
-        return mSQLiteDatabase.update(DaoUtil.getTableName(mClazz),
-                values, whereClause, whereArgs);
+        return mSQLiteDatabase.update(DaoUtil.getTableName(mClazz), values, whereClause, whereArgs);
     }
 
     private QuerySupport<T> mQuerySupport;
