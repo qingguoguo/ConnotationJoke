@@ -2,6 +2,9 @@ package com.qingguoguo.connotationjoke;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
@@ -10,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
@@ -25,6 +29,7 @@ import com.connotationjoke.qingguoguo.baselibrary.view.customdialog.AlertDialog;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +38,7 @@ import connotationjoke.qingguoguo.com.framelibrary.DefaultNavigationBar;
 import connotationjoke.qingguoguo.com.framelibrary.db.DaoSupportFactory;
 import connotationjoke.qingguoguo.com.framelibrary.db.IDaoSupport;
 import connotationjoke.qingguoguo.com.framelibrary.http.HttpCallBack;
+import connotationjoke.qingguoguo.com.framelibrary.skin.SkinManager;
 
 /**
  * @author :qingguoguo
@@ -46,6 +52,9 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 
     @ViewById(R.id.test_tv)
     private TextView mTextView;
+    @ViewById(R.id.test_iv)
+    private ImageView mImageView;
+
 
     @Override
     protected int getLayoutID() {
@@ -75,7 +84,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
         ToastUtils.showShort("测试,阿里热修复,加载补丁");
         //测试,阿里热修复
         //testAliAndFix();
-        fixDexBug();
+        //fixDexBug();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -117,8 +126,31 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 
 //        testShowDialog();
         //testHttp();
-        testInsert();
-        testQuery();
+//        testInsert();
+//        testQuery();
+        //testSkin();
+    }
+
+    private void testSkin() {
+        Resources resources = getResources();
+        Class<AssetManager> assetManagerClass = AssetManager.class;
+        AssetManager assetManager = null;
+        try {
+            assetManager = assetManagerClass.newInstance();
+            Method addAssetPath = assetManagerClass.getDeclaredMethod("addAssetPath", String.class);
+            addAssetPath.setAccessible(true);
+            addAssetPath.invoke(assetManager,
+                    Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "app-debug.apk");
+            Resources newResources = new Resources(assetManager, resources.getDisplayMetrics(), resources.getConfiguration());
+            int identifier = newResources.getIdentifier("bg_header", "drawable", "com.blankj.androidutilcode");
+            Drawable drawable = newResources.getDrawable(identifier);
+            mImageView.setImageDrawable(drawable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String skinPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "app-debug.apk";
+        int result = SkinManager.getInstance().loadSkin();
+        int result2=SkinManager.getInstance().restoreDefault();
     }
 
     private void testQuery() {
