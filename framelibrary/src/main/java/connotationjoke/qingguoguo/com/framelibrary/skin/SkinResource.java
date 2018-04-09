@@ -32,7 +32,6 @@ public class SkinResource {
             addAssetPath.invoke(assetManager,
                     Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "app-debug.apk");
             mSkinResource = new Resources(assetManager, resources.getDisplayMetrics(), resources.getConfiguration());
-
             mSkinPageName = context.getPackageManager()
                     .getPackageArchiveInfo(skinPath, PackageManager.GET_RECEIVERS).packageName;
         } catch (Exception e) {

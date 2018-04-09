@@ -149,7 +149,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
             e.printStackTrace();
         }
         String skinPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "app-debug.apk";
-        int result = SkinManager.getInstance().loadSkin();
+        int result = SkinManager.getInstance().loadSkin("");
         int result2=SkinManager.getInstance().restoreDefault();
     }
 

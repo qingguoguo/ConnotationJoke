@@ -13,6 +13,7 @@ import com.connotationjoke.qingguoguo.baselibrary.util.Utils;
 import com.squareup.leakcanary.LeakCanary;
 
 import connotationjoke.qingguoguo.com.framelibrary.http.OkHttpEngine;
+import connotationjoke.qingguoguo.com.framelibrary.skin.SkinManager;
 
 /**
  * 作者:qingguoguo
@@ -49,6 +50,7 @@ public class BaseApplication extends Application {
         initAliAndFix();
         //初始化自己的热修复
         initFixDex();
+        SkinManager.getInstance().init(this);
     }
 
     private void initFixDex() {

@@ -18,9 +18,11 @@ import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 
 import org.xmlpull.v1.XmlPullParser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import connotationjoke.qingguoguo.com.framelibrary.skin.SkinAttrSupport;
+import connotationjoke.qingguoguo.com.framelibrary.skin.SkinManager;
 import connotationjoke.qingguoguo.com.framelibrary.skin.attr.SkinAttr;
 import connotationjoke.qingguoguo.com.framelibrary.skin.attr.SkinView;
 import connotationjoke.qingguoguo.com.framelibrary.skin.support.SkinAppCompatViewInflater;
@@ -76,7 +78,12 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
      * @param skinView
      */
     private void managerSkinView(SkinView skinView) {
-
+        List<SkinView> skinViews = SkinManager.getInstance().getSkinViews(this);
+        if (skinViews == null) {
+            skinViews = new ArrayList<>();
+            SkinManager.getInstance().register(this,skinViews);
+        }
+        skinViews.add(skinView);
     }
 
     @SuppressLint("RestrictedApi")

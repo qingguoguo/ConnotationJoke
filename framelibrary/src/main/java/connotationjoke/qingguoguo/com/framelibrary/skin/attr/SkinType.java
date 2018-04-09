@@ -1,6 +1,13 @@
 package connotationjoke.qingguoguo.com.framelibrary.skin.attr;
 
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import connotationjoke.qingguoguo.com.framelibrary.skin.SkinManager;
+import connotationjoke.qingguoguo.com.framelibrary.skin.SkinResource;
 
 /**
  * @author :qingguoguo
@@ -10,34 +17,61 @@ import android.view.View;
 
 public enum SkinType {
 
-    TEXT_COLCOR("textColor") {
+    TEXT_COLOR("textColor") {
         @Override
         public void skin(View view, String resName) {
-
+            SkinResource skinResource = getSkinResource();
+            ColorStateList color = skinResource.getColorByName(resName);
+            if (color == null) {
+                return;
+            }
+            TextView textView = (TextView) view;
+            textView.setTextColor(color);
         }
     },
     BACKGROUND("background") {
         @Override
         public void skin(View view, String resName) {
+            SkinResource skinResource = getSkinResource();
+            Drawable drawable = skinResource.getDrawableByName(resName);
+            if (drawable != null) {
+                ImageView imageView = (ImageView) view;
+                imageView.setBackgroundDrawable(drawable);
+            }
 
+            //可能是颜色
+            ColorStateList color = skinResource.getColorByName(resName);
+            if (color != null) {
+                view.setBackgroundColor(color.getDefaultColor());
+            }
         }
     },
     SRC("src") {
         @Override
         public void skin(View view, String resName) {
-
+            SkinResource skinResource = getSkinResource();
+            Drawable drawable = skinResource.getDrawableByName(resName);
+            if (drawable == null) {
+                return;
+            }
+            ImageView imageView = (ImageView) view;
+            imageView.setImageDrawable(drawable);
         }
     };
 
     public String mResName;
 
     SkinType(String resName) {
-        this.mResName=resName;
+        this.mResName = resName;
     }
 
     public abstract void skin(View view, String resName);
 
     public String getResName() {
         return mResName;
+    }
+
+    private static SkinResource getSkinResource() {
+        return SkinManager.getInstance().getSkinResource();
     }
 }
