@@ -2,11 +2,11 @@ package connotationjoke.qingguoguo.com.framelibrary.skin;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +26,7 @@ public class SkinManager {
     private static SkinManager mInstance;
     private Context mContext;
     private SkinResource mSkinResource;
-    private Map<WeakReference<ISkinChangeListener>, List<SkinView>> mSkinViews = new HashMap<>();
+    private Map<WeakReference<ISkinChangeListener>, List<SkinView>> mSkinViews = new ArrayMap<>();
 
     private SkinManager() {
     }
