@@ -6,9 +6,7 @@ import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 
-import java.io.File;
 import java.lang.reflect.Method;
 
 /**
@@ -29,8 +27,7 @@ public class SkinResource {
             assetManager = assetManagerClass.newInstance();
             Method addAssetPath = assetManagerClass.getDeclaredMethod("addAssetPath", String.class);
             addAssetPath.setAccessible(true);
-            addAssetPath.invoke(assetManager,
-                    Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + skinPath);
+            addAssetPath.invoke(assetManager, skinPath);
             mSkinResource = new Resources(assetManager, resources.getDisplayMetrics(), resources.getConfiguration());
             mSkinPageName = context.getPackageManager()
                     .getPackageArchiveInfo(skinPath, PackageManager.GET_RECEIVERS).packageName;
@@ -70,8 +67,4 @@ public class SkinResource {
             return null;
         }
     }
-
-//    public Drawable getSrcByName(String resName) {
-//
-//    }
 }

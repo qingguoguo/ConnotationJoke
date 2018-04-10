@@ -23,8 +23,10 @@ import java.util.List;
 
 import connotationjoke.qingguoguo.com.framelibrary.skin.SkinAttrSupport;
 import connotationjoke.qingguoguo.com.framelibrary.skin.SkinManager;
+import connotationjoke.qingguoguo.com.framelibrary.skin.SkinResource;
 import connotationjoke.qingguoguo.com.framelibrary.skin.attr.SkinAttr;
 import connotationjoke.qingguoguo.com.framelibrary.skin.attr.SkinView;
+import connotationjoke.qingguoguo.com.framelibrary.skin.callback.ISkinChangeListener;
 import connotationjoke.qingguoguo.com.framelibrary.skin.support.SkinAppCompatViewInflater;
 
 /**
@@ -34,9 +36,10 @@ import connotationjoke.qingguoguo.com.framelibrary.skin.support.SkinAppCompatVie
  * 1.拦截View的创建
  * 2.解析属性
  * 3.统一交给SkinManager管理
+ * 4.白天 黑夜最好是切换主题
  */
 
-public abstract class BaseSkinActivity extends BaseActivity implements LayoutInflater.Factory2 {
+public abstract class BaseSkinActivity extends BaseActivity implements LayoutInflater.Factory2, ISkinChangeListener {
     private final static String TAG = "BaseSkinActivity";
     private static final boolean IS_PRE_LOLLIPOP = Build.VERSION.SDK_INT < 21;
     private SkinAppCompatViewInflater mAppCompatViewInflater;
@@ -68,6 +71,8 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
 
             //统一交给SkinManager管理
             managerSkinView(skinView);
+            //是否需要换肤
+            SkinManager.getInstance().checkChangeSkin(skinView);
         }
         return view;
     }
@@ -81,7 +86,7 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
         List<SkinView> skinViews = SkinManager.getInstance().getSkinViews(this);
         if (skinViews == null) {
             skinViews = new ArrayList<>();
-            SkinManager.getInstance().register(this,skinViews);
+            SkinManager.getInstance().register(this, skinViews);
         }
         skinViews.add(skinView);
     }
@@ -117,5 +122,9 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
             }
             parent = parent.getParent();
         }
+    }
+
+    @Override
+    public void changeSkin(SkinResource skinResource) {
     }
 }

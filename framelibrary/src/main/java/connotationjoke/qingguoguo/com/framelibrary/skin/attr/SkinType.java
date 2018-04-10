@@ -34,6 +34,7 @@ public enum SkinType {
         public void skin(View view, String resName) {
             SkinResource skinResource = getSkinResource();
             Drawable drawable = skinResource.getDrawableByName(resName);
+            //背景是图片
             if (drawable != null) {
                 ImageView imageView = (ImageView) view;
                 imageView.setBackgroundDrawable(drawable);
@@ -61,6 +62,11 @@ public enum SkinType {
 
     public String mResName;
 
+    /**
+     * 枚举的构造方法
+     *
+     * @param resName
+     */
     SkinType(String resName) {
         this.mResName = resName;
     }
@@ -71,6 +77,11 @@ public enum SkinType {
         return mResName;
     }
 
+    /**
+     * 获取皮肤资源
+     *
+     * @return
+     */
     private static SkinResource getSkinResource() {
         return SkinManager.getInstance().getSkinResource();
     }

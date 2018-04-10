@@ -5,7 +5,7 @@ import android.view.View;
 /**
  * @author :qingguoguo
  * @datetime ：2018/4/9
- * @describe :
+ * @describe :换肤属性，包含属性名字和类型
  */
 
 public class SkinAttr {

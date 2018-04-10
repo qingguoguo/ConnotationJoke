@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author :qingguoguo
  * @datetime ：2018/4/9
- * @describe :
+ * @describe :皮肤View，包含view和需要换肤的属性
  */
 
 public class SkinView {
@@ -19,6 +19,9 @@ public class SkinView {
         this.mSkinAttrs = skinAttrs;
     }
 
+    /**
+     * 换肤
+     */
     public void skin() {
         for (SkinAttr skinAttr : mSkinAttrs) {
             skinAttr.skin(mView);
