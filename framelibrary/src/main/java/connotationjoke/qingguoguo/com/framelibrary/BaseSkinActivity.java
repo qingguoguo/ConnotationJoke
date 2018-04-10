@@ -127,4 +127,10 @@ public abstract class BaseSkinActivity extends BaseActivity implements LayoutInf
     @Override
     public void changeSkin(SkinResource skinResource) {
     }
+
+    @Override
+    protected void onDestroy() {
+        SkinManager.getInstance().unRegister(this);
+        super.onDestroy();
+    }
 }

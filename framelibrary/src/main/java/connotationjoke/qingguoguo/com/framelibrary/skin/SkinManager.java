@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class SkinManager {
     private static SkinManager mInstance;
     private Context mContext;
     private SkinResource mSkinResource;
-    private Map<ISkinChangeListener, List<SkinView>> mSkinViews = new HashMap<>();
+    private Map<WeakReference<ISkinChangeListener>, List<SkinView>> mSkinViews = new HashMap<>();
 
     private SkinManager() {
     }
@@ -142,14 +143,14 @@ public class SkinManager {
      * 换肤
      */
     public void skin() {
-        Set<ISkinChangeListener> activities = mSkinViews.keySet();
-        for (ISkinChangeListener key : activities) {
-            List<SkinView> skinViews = mSkinViews.get(key);
+        Set<WeakReference<ISkinChangeListener>> weakReferences = mSkinViews.keySet();
+        for (WeakReference<ISkinChangeListener> weakReference : weakReferences) {
+            List<SkinView> skinViews = mSkinViews.get(weakReference);
             for (SkinView skinView : skinViews) {
                 skinView.skin();
             }
             //接口回调
-            key.changeSkin(mSkinResource);
+            weakReference.get().changeSkin(mSkinResource);
         }
     }
 
@@ -170,7 +171,7 @@ public class SkinManager {
      * @param skinViews
      */
     public void register(ISkinChangeListener skinChangeListener, List<SkinView> skinViews) {
-        mSkinViews.put(skinChangeListener, skinViews);
+        mSkinViews.put(new WeakReference<>(skinChangeListener), skinViews);
     }
 
     /**
@@ -200,5 +201,14 @@ public class SkinManager {
      */
     public String getSkinPath() {
         return SkinPreUtils.getInstance(mContext).getSkinPath();
+    }
+
+    /**
+     * 防止内存泄漏
+     *
+     * @param skinChangeListener
+     */
+    public void unRegister(ISkinChangeListener skinChangeListener) {
+        mSkinViews.remove(skinChangeListener);
     }
 }
