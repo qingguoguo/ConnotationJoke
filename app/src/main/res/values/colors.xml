@@ -10,4 +10,7 @@
     <color name="list_item_divider">#ffe6e6e6</color>
     <color name="comment_dialog_share_text">#ff333333</color>
     <color name="comment_dialog_submit_text">#ffffffff</color>
+
+    <color name="rainbow_red">#2F2FFF</color>
+    <color name="rainbow_blue">#FFFFFF</color>
 </resources>

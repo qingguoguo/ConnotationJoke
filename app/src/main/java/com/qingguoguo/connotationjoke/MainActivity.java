@@ -1,27 +1,21 @@
 package com.qingguoguo.connotationjoke;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.connotationjoke.qingguoguo.baselibrary.ExceptionCrashHandler;
 import com.connotationjoke.qingguoguo.baselibrary.fixbug.FixDexManager;
 import com.connotationjoke.qingguoguo.baselibrary.http.HttpUtils;
-import com.connotationjoke.qingguoguo.baselibrary.ioc.CheckNet;
-import com.connotationjoke.qingguoguo.baselibrary.ioc.OnClick;
-import com.connotationjoke.qingguoguo.baselibrary.ioc.ViewById;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.ToastUtils;
 import com.connotationjoke.qingguoguo.baselibrary.view.customdialog.AlertDialog;
@@ -34,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
-import connotationjoke.qingguoguo.com.framelibrary.DefaultNavigationBar;
 import connotationjoke.qingguoguo.com.framelibrary.db.DaoSupportFactory;
 import connotationjoke.qingguoguo.com.framelibrary.db.IDaoSupport;
 import connotationjoke.qingguoguo.com.framelibrary.http.HttpCallBack;
@@ -50,11 +43,6 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     public final static String TAG = MainActivity.class.getSimpleName();
     int REQUEST_EXTERNAL_STORAGE = 1;
 
-    @ViewById(R.id.test_tv)
-    private TextView mTextView;
-    @ViewById(R.id.test_iv)
-    private ImageView mImageView;
-
 
     @Override
     protected int getLayoutID() {
@@ -63,8 +51,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 
     @Override
     protected void initView() {
-        mTextView = viewById(R.id.test_tv);
-        mTextView.setOnClickListener(this);
+
     }
 
     @Override
@@ -78,8 +65,6 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
         uploadCrashFile();
     }
 
-    @CheckNet
-    @OnClick({R.id.test_iv})
     private void testOnclick() {
         ToastUtils.showShort("测试,阿里热修复,加载补丁");
         //测试,阿里热修复
@@ -143,14 +128,10 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
                     Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "app-debug.apk");
             Resources newResources = new Resources(assetManager, resources.getDisplayMetrics(), resources.getConfiguration());
             int identifier = newResources.getIdentifier("bg_header", "drawable", "com.blankj.androidutilcode");
-            Drawable drawable = newResources.getDrawable(identifier);
-            mImageView.setImageDrawable(drawable);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String skinPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "app-debug.apk";
-        int result = SkinManager.getInstance().loadSkin("");
-        int result2=SkinManager.getInstance().restoreDefault();
     }
 
     private void testQuery() {
@@ -197,18 +178,18 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     }
 
     private void testNavigationBar() {
-        ViewGroup viewGroup = findViewById(R.id.main_root);
-        DefaultNavigationBar defaultNavigationBar = new DefaultNavigationBar.
-                Builder(this, viewGroup)
-                .setTitle("投稿")
-                .setRightText("发布")
-                .setRightOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ToastUtils.showShort("测试一下");
-                    }
-                })
-                .create();
+        // ViewGroup viewGroup = findViewById(R.id.main_root);
+//        DefaultNavigationBar defaultNavigationBar = new DefaultNavigationBar.
+//                Builder(this, viewGroup)
+//                .setTitle("投稿")
+//                .setRightText("发布")
+//                .setRightOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        ToastUtils.showShort("测试一下");
+//                    }
+//                })
+//                .create();
     }
 
     private void testShowDialog() {
@@ -287,5 +268,24 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
                 e.printStackTrace();
             }
         }
+    }
+
+    public void skin(View view) {
+        //服务器上下载皮肤
+        String SkinPath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                + File.separator + "app-debug.apk";
+        // 换肤
+        int result = SkinManager.getInstance().loadSkin(SkinPath);
+    }
+
+    public void skin1(View view) {
+        //恢复默认
+        int result = SkinManager.getInstance().restoreDefault();
+    }
+
+    public void skin2(View view) {
+        //跳转
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

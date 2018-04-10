@@ -30,7 +30,7 @@ public class SkinResource {
             Method addAssetPath = assetManagerClass.getDeclaredMethod("addAssetPath", String.class);
             addAssetPath.setAccessible(true);
             addAssetPath.invoke(assetManager,
-                    Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "app-debug.apk");
+                    Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + skinPath);
             mSkinResource = new Resources(assetManager, resources.getDisplayMetrics(), resources.getConfiguration());
             mSkinPageName = context.getPackageManager()
                     .getPackageArchiveInfo(skinPath, PackageManager.GET_RECEIVERS).packageName;
