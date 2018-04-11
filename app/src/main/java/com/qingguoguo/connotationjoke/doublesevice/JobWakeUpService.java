@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
+
 import java.util.List;
 
 /**
@@ -22,6 +24,7 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class JobWakeUpService extends JobService {
     private final static int JOB_WAKEUP_SERVICE_ID = 2;
+    private static final java.lang.String TAG = "JobWakeUpService";
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -37,6 +40,7 @@ public class JobWakeUpService extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters params) {
+        LogUtils.i(TAG,"onStartJob:"+params.toString());
         //开启定时任务，轮寻，看MessageService有没有被杀死
         if (!serviceAlive(MessageService.class.getName())) {
             startService(new Intent(this, MessageService.class));
