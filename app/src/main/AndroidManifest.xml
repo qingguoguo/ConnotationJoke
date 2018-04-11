@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.qingguoguo.connotationjoke">
+          package="com.qingguoguo.connotationjoke">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".BaseApplication"
@@ -16,22 +17,28 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".TestActivity"></activity>
 
         <service android:name=".doublesevice.MessageService">
             <intent-filter>
-                <action android:name="com.study.aidl.user" />
+                <action android:name="com.study.aidl.user"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
 
-        <service android:name=".doublesevice.GuardService" />
+        <service
+            android:name=".doublesevice.GuardService"
+            android:process=":guardprocess"/>
+        <service
+            android:name=".doublesevice.JobWakeUpService"
+            android:enabled="true"
+            android:permission="android.permission.BINS_JOB_SERVICE"/>
     </application>
 
 </manifest>

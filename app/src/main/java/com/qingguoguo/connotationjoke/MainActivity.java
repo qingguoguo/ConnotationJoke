@@ -19,6 +19,7 @@ import com.connotationjoke.qingguoguo.baselibrary.http.HttpUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.ToastUtils;
 import com.connotationjoke.qingguoguo.baselibrary.view.customdialog.AlertDialog;
+import com.qingguoguo.connotationjoke.doublesevice.GuardService;
 import com.qingguoguo.connotationjoke.doublesevice.MessageService;
 
 import java.io.File;
@@ -65,6 +66,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
         //崩溃日志上传服务器
         uploadCrashFile();
         startService(new Intent(this,MessageService.class));
+        startService(new Intent(this,GuardService.class));
     }
 
     private void testOnclick() {
