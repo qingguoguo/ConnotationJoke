@@ -68,9 +68,7 @@ public class BannerView extends RelativeLayout {
         this.mContext = context;
         // 把布局加载到这个View里面
         inflate(context, R.layout.ui_banner_layout, this);
-
         initAttribute(attrs);
-
         initView();
     }
 
