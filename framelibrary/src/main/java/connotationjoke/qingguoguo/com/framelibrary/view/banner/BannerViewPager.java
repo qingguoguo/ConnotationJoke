@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -128,7 +129,7 @@ public class BannerViewPager extends ViewPager {
     }
 
     /**
-     * 销毁Handler停止发送  解决内存泄漏
+     * 销毁Handler停止发送 解决内存泄漏
      */
     @Override
     protected void onDetachedFromWindow() {
@@ -142,8 +143,12 @@ public class BannerViewPager extends ViewPager {
         super.onDetachedFromWindow();
     }
 
+    /**
+     * Handler
+     */
     @Override
     protected void onAttachedToWindow() {
+        Log.e(TAG, "onAttachedToWindow: ");
         if (mAdapter != null) {
             initHandler();
             startRoll();
