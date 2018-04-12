@@ -27,6 +27,7 @@ public class MessageService extends Service {
 
     @Override
     public void onCreate() {
+        LogUtils.i(TAG,"MessageService onCreate");
         super.onCreate();
         new Thread(new Runnable() {
             @Override
@@ -43,8 +44,10 @@ public class MessageService extends Service {
         }).start();
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        LogUtils.i(TAG,"MessageService onStartCommand");
         //提高进程的优先级
         startForeground(MESSAGE_SERVICE_ID, new Notification());
         //绑定建立连接
@@ -57,11 +60,11 @@ public class MessageService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        LogUtils.i(TAG,"MessageService onBind");
         return mIBinder;
     }
 
     private IBinder mIBinder = new MessageAidl.Stub() {
-
         @Override
         public String getUserName() throws RemoteException {
             return "qingguoguo";
@@ -74,12 +77,19 @@ public class MessageService extends Service {
     };
 
     @Override
+    public boolean onUnbind(Intent intent) {
+        LogUtils.i(TAG,"MessageService onUnbind");
+        return super.onUnbind(intent);
+    }
+
+    @Override
     public void onDestroy() {
+        LogUtils.i(TAG,"MessageService onDestroy");
         super.onDestroy();
-        bindService(new Intent(this, GuardService.class), mConnection, Context.BIND_IMPORTANT);
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             //连接上
             ToastUtils.showShort("建立连接 GuardService");
@@ -89,7 +99,8 @@ public class MessageService extends Service {
         public void onServiceDisconnected(ComponentName name) {
             //断开连接，重新启动，绑定
             startService(new Intent(MessageService.this, GuardService.class));
-            bindService(new Intent(MessageService.this, GuardService.class), mConnection, Context.BIND_IMPORTANT);
+            bindService(new Intent(MessageService.this, GuardService.class),
+                    mConnection, Context.BIND_IMPORTANT);
         }
     };
 }

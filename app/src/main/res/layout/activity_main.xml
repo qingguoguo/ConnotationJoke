@@ -28,6 +28,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:onClick="start"
+        android:padding="10dp"
+        android:text="start"
+        android:textColor="@color/rainbow_blue" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="stop"
+        android:padding="10dp"
+        android:text="stop"
+        android:textColor="@color/rainbow_blue" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="onBind"
+        android:padding="10dp"
+        android:text="onBind"
+        android:textColor="@color/rainbow_blue" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="unbind"
+        android:padding="10dp"
+        android:text="unbind"
+        android:textColor="@color/rainbow_blue" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:onClick="skin2"
         android:padding="10dp"
         android:text="跳转"

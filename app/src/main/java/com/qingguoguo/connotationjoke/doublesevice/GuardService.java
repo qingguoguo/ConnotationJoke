@@ -27,7 +27,6 @@ public class GuardService extends Service {
         super.onCreate();
     }
 
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -45,12 +44,6 @@ public class GuardService extends Service {
         bindService(new Intent(this, MessageService.class),
                 mConnection, Context.BIND_IMPORTANT);
         return START_STICKY;
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
 
     }
 
