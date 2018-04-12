@@ -1,17 +1,12 @@
 package com.qingguoguo.connotationjoke;
 
 import android.Manifest;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -24,8 +19,6 @@ import com.connotationjoke.qingguoguo.baselibrary.http.HttpUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.ToastUtils;
 import com.connotationjoke.qingguoguo.baselibrary.view.customdialog.AlertDialog;
-import com.qingguoguo.connotationjoke.doublesevice.GuardService;
-import com.qingguoguo.connotationjoke.doublesevice.JobWakeUpService;
 import com.qingguoguo.connotationjoke.doublesevice.MessageService;
 
 import java.io.File;
@@ -71,11 +64,6 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     protected void initData() {
         //崩溃日志上传服务器
         uploadCrashFile();
-        if (Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP){
-            startService(new Intent(this, JobWakeUpService.class));
-        }
-        startService(new Intent(this,MessageService.class));
-        startService(new Intent(this,GuardService.class));
     }
 
     private void testOnclick() {
@@ -311,28 +299,8 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     }
 
     public void onBind(View view) {
-        bindService(new Intent(this, MessageService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     public void unbind(View view) {
-        unbindService(mServiceConnection);
     }
-
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            LogUtils.i("建立连接 MessageService");
-            MessageAidl messageAidl = MessageAidl.Stub.asInterface(service);
-            try {
-                LogUtils.i("MessageService","messageAidl:"+messageAidl.getUserName());
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            LogUtils.i("onServiceDisconnected MessageService");
-        }
-    };
 }
