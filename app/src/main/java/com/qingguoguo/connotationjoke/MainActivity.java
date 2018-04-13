@@ -33,6 +33,7 @@ import connotationjoke.qingguoguo.com.framelibrary.db.DaoSupportFactory;
 import connotationjoke.qingguoguo.com.framelibrary.db.IDaoSupport;
 import connotationjoke.qingguoguo.com.framelibrary.http.HttpCallBack;
 import connotationjoke.qingguoguo.com.framelibrary.skin.SkinManager;
+import connotationjoke.qingguoguo.com.framelibrary.view.selectimage.ImageSelector;
 
 /**
  * @author :qingguoguo
@@ -284,10 +285,22 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
         int result = SkinManager.getInstance().restoreDefault();
     }
 
+    private ArrayList<String> mImageList;
+    private final int SELECT_IMAGE_REQUEST = 0x0011;
     public void skin2(View view) {
         //跳转
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+//        Intent intent = new Intent(this,SelectImageActivity.class);
+//        intent.putExtra(SelectImageActivity.EXTRA_SELECT_COUNT,9);
+//        intent.putExtra(SelectImageActivity.EXTRA_SELECT_MODE,SelectImageActivity.MODE_MULTI);
+//        intent.putStringArrayListExtra(SelectImageActivity.EXTRA_DEFAULT_SELECTED_LIST, mImageList);
+//        intent.putExtra(SelectImageActivity.EXTRA_SHOW_CAMERA, true);
+//        startActivityForResult(intent, SELECT_IMAGE_REQUEST);
+
+        // 第一个只关注想要什么，良好的封装性，不要暴露太多
+        ImageSelector.create().count(9).multi().origin(mImageList)
+                .showCamera(true).start(this, SELECT_IMAGE_REQUEST);
     }
 
     public void start(View view) {

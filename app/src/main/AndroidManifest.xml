@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TestActivity"></activity>
+        <activity android:name="connotationjoke.qingguoguo.com.framelibrary.view.selectimage.SelectImageActivity"></activity>
 
         <service android:name=".doublesevice.MessageService">
             <intent-filter>

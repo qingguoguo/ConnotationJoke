@@ -1,6 +1,7 @@
 package connotationjoke.qingguoguo.com.framelibrary.http;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 
 import com.connotationjoke.qingguoguo.baselibrary.http.EngineCallBack;
@@ -34,6 +35,7 @@ import okhttp3.Response;
 public class OkHttpEngine implements IHttpEngine {
     private static final java.lang.String TAG = "OkHttpEngine";
     private static OkHttpClient mOkHttpClient = new OkHttpClient();
+    private static Handler mHandler = new Handler();
     private Call mCall;
     private EngineCallBack mEngineCallBack;
 
@@ -58,13 +60,18 @@ public class OkHttpEngine implements IHttpEngine {
         mCall = mOkHttpClient.newCall(request);
         mCall.enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                callBack.onError(e);
+            public void onFailure(Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callBack.onError(e);
+                    }
+                });
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String resultJson = response.body().string();
+                final String resultJson = response.body().string();
                 LogUtils.i(TAG, "Get返回结果：" + resultJson);
 
                 //网络请求返回来的结果，与缓存比较，如果不相同就返回，并添加到缓存中
@@ -75,7 +82,13 @@ public class OkHttpEngine implements IHttpEngine {
                         return;
                     }
                 }
-                callBack.onSuccess(resultJson);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callBack.onSuccess(resultJson);
+                    }
+                });
+
                 LogUtils.i(TAG, "Get返回结果和缓存不一致：" + resultJson);
                 if (cache) {
                     CacheDataUtil.cacheData(fUrl, resultJson);
@@ -100,15 +113,25 @@ public class OkHttpEngine implements IHttpEngine {
         mCall = mOkHttpClient.newCall(request);
         mCall.enqueue(new Callback() {
                           @Override
-                          public void onFailure(okhttp3.Call call, IOException e) {
-                              callBack.onError(e);
+                          public void onFailure(okhttp3.Call call, final IOException e) {
+                              mHandler.post(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                      callBack.onError(e);
+                                  }
+                              });
                           }
 
                           @Override
                           public void onResponse(okhttp3.Call call, Response response) throws IOException {
                               // 这个 两个回掉方法都不是在主线程中
-                              String result = response.body().string();
-                              callBack.onSuccess(result);
+                              final String result = response.body().string();
+                              mHandler.post(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                      callBack.onSuccess(result);
+                                  }
+                              });
                           }
                       }
         );
