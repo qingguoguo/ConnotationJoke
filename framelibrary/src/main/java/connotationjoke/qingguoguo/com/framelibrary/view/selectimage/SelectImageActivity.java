@@ -232,9 +232,9 @@ public class SelectImageActivity extends BaseSkinActivity implements View.OnClic
         this.sendBroadcast(new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE", Uri.fromFile(imageFile)));
         Intent data = new Intent();
         this.mResultList.add(imageFile.getAbsolutePath());
-        data.putStringArrayListExtra("select_result", this.mResultList);
+        data.putStringArrayListExtra(EXTRA_RESULT, this.mResultList);
         this.setResult(-1, data);
-        this.finish();
+        //this.finish();
     }
 
     @Override

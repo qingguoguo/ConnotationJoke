@@ -35,6 +35,8 @@ import connotationjoke.qingguoguo.com.framelibrary.http.HttpCallBack;
 import connotationjoke.qingguoguo.com.framelibrary.skin.SkinManager;
 import connotationjoke.qingguoguo.com.framelibrary.view.selectimage.ImageSelector;
 
+import static connotationjoke.qingguoguo.com.framelibrary.view.selectimage.SelectImageActivity.EXTRA_RESULT;
+
 /**
  * @author :qingguoguo
  * @datetime ：2018/3/27 16:20
@@ -287,6 +289,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 
     private ArrayList<String> mImageList;
     private final int SELECT_IMAGE_REQUEST = 0x0011;
+
     public void skin2(View view) {
         //跳转
 //        Intent intent = new Intent(this, MainActivity.class);
@@ -315,5 +318,19 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     }
 
     public void unbind(View view) {
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SELECT_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            ArrayList<String> list = data.getStringArrayListExtra(EXTRA_RESULT);
+            if (list != null) {
+                LogUtils.i(TAG, "选择的图片：" + list.size());
+            } else {
+                LogUtils.i(TAG, "选择的图片：" + list);
+            }
+
+        }
     }
 }
