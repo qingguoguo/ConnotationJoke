@@ -17,11 +17,13 @@ public class ImageSelector {
      * 选择图片的模式 - 默认多选
      * 是否显示拍照的相机
      * 原始的图片
+     * 返回选择图片的列表
      */
     private int mMaxCount = 9;
     private int mMode = SelectImageActivity.MODE_MULTI;
     private boolean mShowCamera = true;
     private ArrayList<String> mOriginData;
+    public static final String EXTRA_RESULT = "EXTRA_IMAGE_RESULT";
 
     private ImageSelector() {
     }

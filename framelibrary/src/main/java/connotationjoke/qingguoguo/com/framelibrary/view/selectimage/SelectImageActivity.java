@@ -1,17 +1,26 @@
 package connotationjoke.qingguoguo.com.framelibrary.view.selectimage;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 
@@ -34,18 +43,16 @@ public class SelectImageActivity extends BaseSkinActivity implements View.OnClic
 
     /**
      * 传过来的 Key
-     * 是否显示相机的 EXTRA_KEY
-     * 总共可以选择多少张图片的 EXTRA_KEY
-     * 原始的图片路径的 EXTRA_KEY
-     * 选择模式的 EXTRA_KEY
-     * 返回选择图片列表的 EXTRA_KEY
+     * 是否显示相机的 EXTRA_SHOW_CAMERA
+     * 总共可以选择多少张图片 EXTRA_SELECT_COUNT
+     * 原始的图片路径的 EXTRA_DEFAULT_SELECTED_LIST
+     * 选择模式的 EXTRA_SELECT_MODE
      * 加载所有的数据 LOADER_TYPE
      */
     public static final String EXTRA_SHOW_CAMERA = "EXTRA_SHOW_CAMERA";
     public static final String EXTRA_SELECT_COUNT = "EXTRA_SELECT_COUNT";
     public static final String EXTRA_DEFAULT_SELECTED_LIST = "EXTRA_DEFAULT_SELECTED_LIST";
     public static final String EXTRA_SELECT_MODE = "EXTRA_SELECT_MODE";
-    public static final String EXTRA_RESULT = "EXTRA_RESULT";
     private static final int LOADER_TYPE = 0x0021;
 
     /**
@@ -60,13 +67,17 @@ public class SelectImageActivity extends BaseSkinActivity implements View.OnClic
     public static final int MODE_MULTI = 0x0011;
     public static int MODE_SINGLE = 0x0012;
     private int mMode = MODE_MULTI;
-    private int mMaxCount = 8;
+    private int mMaxCount = 9;
     private boolean mShowCamera = true;
     private ArrayList<String> mResultList;
 
     private RecyclerView mImageListRv;
     private TextView mSelectNumTv;
     private TextView mSelectPreview;
+    private File mImageFile = null;
+
+    private static final int REQUEST_CAMERA = 100;
+    private static final int REQUEST_STORAGE_WRITE_ACCESS_PERMISSION = 110;
 
     @Override
     protected int getLayoutID() {
@@ -83,7 +94,7 @@ public class SelectImageActivity extends BaseSkinActivity implements View.OnClic
             public void onClick(View v) {
                 // 选择好的图片回传过去
                 Intent intent = new Intent();
-                intent.putStringArrayListExtra(EXTRA_RESULT, mResultList);
+                intent.putStringArrayListExtra(ImageSelector.EXTRA_RESULT, mResultList);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -218,23 +229,11 @@ public class SelectImageActivity extends BaseSkinActivity implements View.OnClic
         exchangeViewShow();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onCamera() {
-        File imageFile = null;
-        try {
-            imageFile = FileUtils.createTmpFile(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (imageFile == null) {
-            return;
-        }
-        this.sendBroadcast(new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE", Uri.fromFile(imageFile)));
-        Intent data = new Intent();
-        this.mResultList.add(imageFile.getAbsolutePath());
-        data.putStringArrayListExtra(EXTRA_RESULT, this.mResultList);
-        this.setResult(-1, data);
-        //this.finish();
+        //打开相机
+        showCameraAction();
     }
 
     @Override
@@ -245,5 +244,79 @@ public class SelectImageActivity extends BaseSkinActivity implements View.OnClic
         // 3.通知系统本地有图片改变，下次进来可以找到这张图片
         // notify system the image has change
         // sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mTempFile));
+        if (requestCode == REQUEST_CAMERA) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (mImageFile != null) {
+                    saveImage(mImageFile);
+                }
+            } else {
+                while (mImageFile != null && mImageFile.exists()) {
+                    boolean success = mImageFile.delete();
+                    if (success) {
+                        mImageFile = null;
+                    }
+                }
+            }
+        }
+    }
+
+    private void saveImage(File imageFile) {
+        if(imageFile != null) {
+            // notify system the image has change
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)));
+            Intent data = new Intent();
+            mResultList.add(imageFile.getAbsolutePath());
+            data.putStringArrayListExtra(ImageSelector.EXTRA_RESULT, mResultList);
+            setResult(RESULT_OK, data);
+            finish();
+        }
+    }
+
+    /**
+     * 打开相机
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void showCameraAction() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, getString(R.string.mis_permission_rationale_write_storage),
+                    REQUEST_STORAGE_WRITE_ACCESS_PERMISSION);
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (intent.resolveActivity(this.getPackageManager()) != null) {
+                try {
+                    mImageFile = FileUtils.createTmpFile(this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (mImageFile != null && mImageFile.exists()) {
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mImageFile));
+                    startActivityForResult(intent, REQUEST_CAMERA);
+                } else {
+                    Toast.makeText(this, R.string.mis_error_image_not_exist, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, R.string.mis_msg_no_camera, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestPermission(final String permission, String rationale, final int requestCode){
+        if(shouldShowRequestPermissionRationale(permission)){
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.mis_permission_dialog_title)
+                    .setMessage(rationale)
+                    .setPositiveButton(R.string.mis_permission_dialog_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            requestPermissions(new String[]{permission}, requestCode);
+                        }
+                    })
+                    .setNegativeButton(R.string.mis_permission_dialog_cancel, null)
+                    .create().show();
+        }else{
+            requestPermissions(new String[]{permission}, requestCode);
+        }
     }
 }
