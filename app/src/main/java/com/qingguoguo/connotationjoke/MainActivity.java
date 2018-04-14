@@ -75,7 +75,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void initPremiss() {
+    private void initPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return;
         }
@@ -97,7 +97,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        initPremiss();
+        initPermission();
     }
 
     @Override
