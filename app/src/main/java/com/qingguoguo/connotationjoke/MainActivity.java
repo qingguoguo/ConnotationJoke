@@ -20,6 +20,9 @@ import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.ToastUtils;
 import com.connotationjoke.qingguoguo.baselibrary.view.customdialog.AlertDialog;
 import com.qingguoguo.connotationjoke.doublesevice.MessageService;
+import com.qingguoguo.connotationjoke.hookstartactivity.HookStartActivityUtils;
+import com.qingguoguo.connotationjoke.hookstartactivity.ProxyActivity;
+import com.qingguoguo.connotationjoke.hookstartactivity.TestHookActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -287,6 +290,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
 
     private ArrayList<String> mImageList;
     private final int SELECT_IMAGE_REQUEST = 0x0011;
+
     public void skin2(View view) {
         //跳转
 //        Intent intent = new Intent(this, MainActivity.class);
@@ -315,5 +319,12 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     }
 
     public void unbind(View view) {
+        HookStartActivityUtils hookStartActivityUtils = new HookStartActivityUtils(this, ProxyActivity.class);
+        try {
+            hookStartActivityUtils.hookStartActivity();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        startActivity(new Intent(this, TestHookActivity.class));
     }
 }

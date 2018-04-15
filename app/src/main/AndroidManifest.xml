@@ -40,6 +40,7 @@
             android:name=".doublesevice.JobWakeUpService"
             android:enabled="true"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <activity android:name=".hookstartactivity.ProxyActivity"/>
     </application>
 
 </manifest>
