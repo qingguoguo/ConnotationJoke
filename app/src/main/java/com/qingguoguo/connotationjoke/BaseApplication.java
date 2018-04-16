@@ -1,6 +1,7 @@
 package com.qingguoguo.connotationjoke;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import com.alipay.euler.andfix.patch.PatchManager;
@@ -10,6 +11,8 @@ import com.connotationjoke.qingguoguo.baselibrary.http.HttpUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.PhoneSystemUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.Utils;
+import com.qingguoguo.connotationjoke.hookstartactivity.HookStartActivityUtils;
+import com.qingguoguo.connotationjoke.hookstartactivity.ProxyActivity;
 import com.squareup.leakcanary.LeakCanary;
 
 import connotationjoke.qingguoguo.com.framelibrary.http.OkHttpEngine;
@@ -51,6 +54,18 @@ public class BaseApplication extends Application {
         //初始化自己的热修复
         initFixDex();
         SkinManager.getInstance().init(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        //在程序入口处进行初始化工作，也就是hook
+        HookStartActivityUtils hookStartActivityUtils = new HookStartActivityUtils(this, ProxyActivity.class);
+        try {
+            hookStartActivityUtils.hookStartActivity();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initFixDex() {

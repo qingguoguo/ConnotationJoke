@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
+import com.connotationjoke.qingguoguo.baselibrary.util.StatusBarUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -108,7 +110,7 @@ public class SelectImageActivity extends BaseSkinActivity implements View.OnClic
                 .setTitle("所有图片")
                 .create();
         // 改变状态栏的颜色
-        //StatusBarUtil.statusBarTintColor(this, Color.parseColor("#261f1f"));
+        StatusBarUtil.statusBarTintColor(this, Color.parseColor("#261f1f"));
     }
 
     @Override

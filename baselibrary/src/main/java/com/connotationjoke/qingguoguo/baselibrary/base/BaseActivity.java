@@ -1,11 +1,11 @@
 package com.connotationjoke.qingguoguo.baselibrary.base;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.connotationjoke.qingguoguo.baselibrary.ioc.ViewUtils;
@@ -16,7 +16,7 @@ import com.connotationjoke.qingguoguo.baselibrary.ioc.ViewUtils;
  * 描述:
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
