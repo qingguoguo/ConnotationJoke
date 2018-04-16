@@ -60,7 +60,6 @@ public class HookStartActivityUtils {
                 new Class<?>[]{IActivityManagerIntercept}, iamInvocationHandler);
         //替换掉 mInstance
         instanceField.set(singletonObject, proxyInstance);
-        hookLaunchActivity();
     }
 
     public void hookLaunchActivity() throws Exception {
@@ -78,10 +77,10 @@ public class HookStartActivityUtils {
         Class<Handler> handlerClass = Handler.class;
         Field mCallbackField = handlerClass.getDeclaredField("mCallback");
         mCallbackField.setAccessible(true);
-        mCallbackField.set(mH, mCallback);
+        mCallbackField.set(mH, new HandlerCallback());
     }
 
-    private Handler.Callback mCallback = new Handler.Callback() {
+    private class HandlerCallback implements Handler.Callback {
         @Override
         public boolean handleMessage(Message msg) {
             // public static final int LAUNCH_ACTIVITY = 100;
@@ -90,37 +89,37 @@ public class HookStartActivityUtils {
             }
             return false;
         }
-    };
 
-    /**
-     * 拦截 替换 ActivityClientRecord的 intent
-     *
-     * @param msg
-     */
-    private void handleLaunchActivity(Message msg) {
-        // final ActivityClientRecord r = (ActivityClientRecord) msg.obj;
-        //从Message 拿到 ActivityClientRecord
-        Object obj = msg.obj;
-        try {
-            /**ActivityClientRecord r = new ActivityClientRecord();
-             // r.token = token;
-             // r.ident = ident;
-             // r.intent = intent;
-             //static final class ActivityClientRecord {
-             //    IBinder token;
-             //    int ident;
-             //    Intent intent;
-             //从ActivityClientRecord  safeIntent*/
-            Field intentField = obj.getClass().getDeclaredField("intent");
-            intentField.setAccessible(true);
-            Intent safeIntent = (Intent) intentField.get(obj);
-            //从safeIntent拿到oldIntent
-            if (safeIntent != null) {
+        /**
+         * 拦截 替换 ActivityClientRecord的 intent
+         *
+         * @param msg
+         */
+        private void handleLaunchActivity(Message msg) {
+            // final ActivityClientRecord r = (ActivityClientRecord) msg.obj;
+            //从Message 拿到 ActivityClientRecord
+            Object activityRecord = msg.obj;
+            try {
+                /**ActivityClientRecord r = new ActivityClientRecord();
+                 // r.token = token;
+                 // r.ident = ident;
+                 // r.intent = intent;
+                 //static final class ActivityClientRecord {
+                 //    IBinder token;
+                 //    int ident;
+                 //    Intent intent;
+                 //从ActivityClientRecord  safeIntent*/
+                Field intentField = activityRecord.getClass().getDeclaredField("intent");
+                intentField.setAccessible(true);
+                Intent safeIntent = (Intent) intentField.get(activityRecord);
+                //从safeIntent拿到oldIntent
                 Intent oldIntent = safeIntent.getParcelableExtra(EXTRA_OLD_INTENT);
-                intentField.set(obj, oldIntent);
+                if (oldIntent != null) {
+                    intentField.set(activityRecord, oldIntent);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

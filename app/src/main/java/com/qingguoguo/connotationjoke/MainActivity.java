@@ -330,7 +330,6 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
             } else {
                 LogUtils.i(TAG, "选择的图片：" + list);
             }
-
         }
     }
 }

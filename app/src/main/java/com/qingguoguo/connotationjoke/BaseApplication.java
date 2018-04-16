@@ -63,6 +63,7 @@ public class BaseApplication extends Application {
         HookStartActivityUtils hookStartActivityUtils = new HookStartActivityUtils(this, ProxyActivity.class);
         try {
             hookStartActivityUtils.hookStartActivity();
+            hookStartActivityUtils.hookLaunchActivity();
         } catch (Exception e) {
             e.printStackTrace();
         }
