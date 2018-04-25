@@ -24,9 +24,9 @@ import dalvik.system.BaseDexClassLoader;
 
 public class FixDexManager {
 
+    public final static String TAG = FixDexManager.class.getSimpleName();
     private Context mContext;
     private File mDexDir;
-    public final static String TAG = FixDexManager.class.getSimpleName();
 
     public FixDexManager(Context context) {
         this.mContext = context;

@@ -1,10 +1,8 @@
 package com.qingguoguo.connotationjoke.hookstartactivity;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-
 import com.qingguoguo.connotationjoke.R;
+
+import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
 
 /**
  * 作者:qingguoguo
@@ -12,11 +10,25 @@ import com.qingguoguo.connotationjoke.R;
  * 描述:在注册清单中未配置的测试Activity
  */
 
-public class TestHookActivity extends Activity {
+public class TestHookActivity extends BaseSkinActivity {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+    protected int getLayoutID() {
+        return  R.layout.activity_test;
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void initTitle() {
+
+    }
+
+    @Override
+    protected void initData() {
+
     }
 }

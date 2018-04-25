@@ -22,6 +22,11 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+//task clean(type: Delete) {
+//    delete rootProject.buildDir
+//}
+task clean(type: Exec) {
+    ext.lockhunter = '\"C:\\LockHunter.exe\"'
+    def buildDir = file(new File("build"))
+    commandLine 'cmd', "$lockhunter", '/delete', '/silent', buildDir
 }

@@ -60,10 +60,15 @@ public class BaseApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         //在程序入口处进行初始化工作，也就是hook
-        HookStartActivityUtils hookStartActivityUtils = new HookStartActivityUtils(this, ProxyActivity.class);
+        //hookStartActivity();
+    }
+
+    private void hookStartActivity() {
+        HookStartActivityUtils hookStartActivityUtil =
+                new HookStartActivityUtils(this,ProxyActivity.class);
         try {
-            hookStartActivityUtils.hookStartActivity();
-            hookStartActivityUtils.hookLaunchActivity();
+            hookStartActivityUtil.hookStartActivity();
+            hookStartActivityUtil.hookLaunchActivity();
         } catch (Exception e) {
             e.printStackTrace();
         }
