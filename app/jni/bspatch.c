@@ -16,7 +16,7 @@ __FBSDID("$FreeBSD: src/usr.bin/bsdiff/bspatch/bspatch.c,v 1.1 2005/08/06 01:59:
 #include <err.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include "com_hc_essay_library_util_PatchUtils.h"
+#include "com_qingguoguo_connotationjoke_PatchUtils.h"
 
 static off_t offtin(u_char *buf)
 {

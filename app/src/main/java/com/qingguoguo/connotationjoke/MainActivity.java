@@ -20,7 +20,6 @@ import com.connotationjoke.qingguoguo.baselibrary.util.LogUtils;
 import com.connotationjoke.qingguoguo.baselibrary.util.ToastUtils;
 import com.connotationjoke.qingguoguo.baselibrary.view.customdialog.AlertDialog;
 import com.qingguoguo.connotationjoke.doublesevice.MessageService;
-import com.qingguoguo.connotationjoke.hookstartactivity.TestHookActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -317,7 +316,7 @@ public class MainActivity extends BaseSkinActivity implements View.OnClickListen
     }
 
     public void unbind(View view) {
-        startActivity(new Intent(this, TestHookActivity.class));
+        startActivity(new Intent(this, TestActivity.class));
     }
 
     @Override

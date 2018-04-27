@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.qingguoguo.connotationjoke.TestActivity">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/test_fix"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"/>
-
-</RelativeLayout>
+    <com.connotationjoke.qingguoguo.baselibrary.view.QQStepView
+        android:id="@+id/qq_step"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/account_account_bind"
+        android:src="@mipmap/ic_launcher"
+        app:innerCircleColor="@color/colorPrimary"
+        app:outCircleColour="@color/account_account_action_normal"
+        app:outCircleWidth="20dp"
+        app:textColour="@color/colorPrimary"
+        app:textSize="50sp" />
+</LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="QQStepView">
+        <attr name="outCircleColour" format="color" />
+        <attr name="innerCircleColor" format="color" />
+        <attr name="outCircleWidth" format="dimension" />
+        <attr name="textSize" format="dimension" />
+        <attr name="text" format="string" />
+        <attr name="textColour" format="color" />
+    </declare-styleable>
+</resources>
