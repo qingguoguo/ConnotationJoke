@@ -25,8 +25,8 @@ public class QQStepView extends View {
     private int mTextSize;
     private int mMaxStep;
     private int mStep;
-    private int mInnerCircleColor = Color.RED;
-    private int mOutCircleColour = Color.BLUE;
+    private int mInnerCircleColor = Color.BLUE;
+    private int mOutCircleColour = Color.RED;
     private int mTextColour = Color.BLUE;
     private int mOutCircleWidth;
     private Paint outCirclePaint;
@@ -65,7 +65,6 @@ public class QQStepView extends View {
         textPaint.setAntiAlias(true);
         textPaint.setColor(mTextColour);
         textPaint.setTextSize(mTextSize);
-
     }
 
     @Override
@@ -108,14 +107,15 @@ public class QQStepView extends View {
         int centreX = width / 2;
         int centreY = height / 2;
 
-        //画底部的圆弧
+        //画外面的圆弧
+        outCirclePaint.setColor(mOutCircleColour);
         //float left, float top, float right, float bottom
         RectF rectF = new RectF(mOutCircleWidth / 2, mOutCircleWidth / 2,
                 getWidth() - mOutCircleWidth / 2, getHeight() - mOutCircleWidth / 2);
         //@NonNull RectF oval, float startAngle, float sweepAngle, boolean useCenter,@NonNull Paint paint
         canvas.drawArc(rectF, 135, 270, false, outCirclePaint);
 
-        //画上面的圆弧
+        //画里面的圆弧
         outCirclePaint.setColor(mInnerCircleColor);
         float sweepAngle = (float) mStep / mMaxStep;
         canvas.drawArc(rectF, 135, sweepAngle * 270, false, outCirclePaint);
