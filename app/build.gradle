@@ -28,7 +28,7 @@ android {
 
     task ndkBuild(type: Exec) {//设置新的so的生成目录
         //确保已经下载了NDK
-        commandLine "D:\\ASSDK\\sdk\\ndk-bundle\\ndk-build.cmd",
+        commandLine "D:\\develop\\androidsdk\\sdk\\ndk-bundle\\ndk-build.cmd",
                 'NDK_PROJECT_PATH=build/intermediates/ndk',
                 'NDK_LIBS_OUT=libs',
                 'APP_BUILD_SCRIPT=jni/Android.mk',
