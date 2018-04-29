@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.view.animation.DecelerateInterpolator;
 
+import com.connotationjoke.qingguoguo.baselibrary.view.ColorTrackTextView;
 import com.connotationjoke.qingguoguo.baselibrary.view.QQStepView;
 
 import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
@@ -16,6 +17,8 @@ import connotationjoke.qingguoguo.com.framelibrary.BaseSkinActivity;
 public class TestActivity extends BaseSkinActivity {
 
     private static final String TAG = TestActivity.class.getSimpleName();
+    private QQStepView qqStepView;
+    private ColorTrackTextView trackTextView;
 
     @Override
     protected int getLayoutID() {
@@ -25,10 +28,11 @@ public class TestActivity extends BaseSkinActivity {
     @Override
     protected void initTitle() {
     }
-    QQStepView qqStepView;
+
     @Override
     protected void initView() {
         qqStepView = findViewById(R.id.qq_step);
+        trackTextView = findViewById(R.id.color_track_tv);
     }
 
     @Override
@@ -45,5 +49,16 @@ public class TestActivity extends BaseSkinActivity {
             }
         });
         valueAnimator.start();
+
+
+        ValueAnimator trackValueAnimator = ObjectAnimator.ofFloat(0, 1);
+        trackValueAnimator.setDuration(3000);
+        trackValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                trackTextView.setPosition((Float) animation.getAnimatedValue());
+            }
+        });
+        trackValueAnimator.start();
     }
 }

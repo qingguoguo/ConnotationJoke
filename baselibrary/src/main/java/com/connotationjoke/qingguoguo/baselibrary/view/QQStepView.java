@@ -47,7 +47,7 @@ public class QQStepView extends View {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.QQStepView);
-        mOutCircleColour = ta.getColor(R.styleable.QQStepView_outCircleColour, mOutCircleColour);
+        mOutCircleColour = ta.getColor(R.styleable.QQStepView_outCircleColor, mOutCircleColour);
         mInnerCircleColor = ta.getColor(R.styleable.QQStepView_innerCircleColor, mInnerCircleColor);
         mTextColour = ta.getColor(R.styleable.QQStepView_textColour, mTextColour);
         mOutCircleWidth = ta.getDimensionPixelSize(R.styleable.QQStepView_outCircleWidth, 20);

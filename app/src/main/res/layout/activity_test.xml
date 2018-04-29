@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <com.connotationjoke.qingguoguo.baselibrary.view.QQStepView
         android:id="@+id/qq_step"
@@ -11,8 +12,19 @@
         android:background="@color/account_account_bind"
         android:src="@mipmap/ic_launcher"
         app:innerCircleColor="@color/colorPrimary"
-        app:outCircleColour="@color/account_account_action_normal"
+        app:outCircleColor="@color/account_account_action_normal"
         app:outCircleWidth="20dp"
         app:textColour="@color/colorPrimary"
-        app:textSize="50sp" />
+        app:textSize="50sp"/>
+
+    <com.connotationjoke.qingguoguo.baselibrary.view.ColorTrackTextView
+        android:id="@+id/color_track_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/account_account_action_selected"
+        android:text="嘻嘻哈哈大家偶就哟OK.hello.java"
+        app:endColor="@color/comment_dialog_content_text"
+        app:startColor="@color/account_account_action_normal"/>
 </LinearLayout>
