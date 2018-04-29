@@ -8,6 +8,7 @@
         <attr name="text" format="string" />
         <attr name="textColour" format="color" />
     </declare-styleable>
+
     <declare-styleable name="ColorTrackTextView">
         <attr name="startColor" format="color" />
         <attr name="endColor" format="color" />
