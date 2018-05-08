@@ -19,7 +19,7 @@ public class StatusBarUtil {
     /**
      * 设置状态栏的颜色
      */
-    public static void statusBarTintColor(Activity activity, int color) {
+    public static void setStatusBarTintColor(Activity activity, int color) {
         //versionCode 5.0 及以上
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().setStatusBarColor(color);
@@ -72,7 +72,7 @@ public class StatusBarUtil {
     /**
      * 状态栏透明,整个界面全屏
      */
-    public static void statusBarTranslucent(Activity activity) {
+    public static void setStatusBarTranslucent(Activity activity) {
         // versionCode 5.0 及以上
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             View decorView = activity.getWindow().getDecorView();
