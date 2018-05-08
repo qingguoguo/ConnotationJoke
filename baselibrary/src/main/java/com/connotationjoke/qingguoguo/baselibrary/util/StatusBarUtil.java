@@ -35,10 +35,14 @@ public class StatusBarUtil {
             if (contentView != null) {
                 contentView.setFitsSystemWindows(true);
             }
-            // 在原来的位置上添加一个状态栏
+
+            //在原来的位置上添加一个状态栏
             View statusBarView = createStatusBarView(activity);
-            androidContainer.addView(statusBarView, 0);
             statusBarView.setBackgroundColor(color);
+            androidContainer.addView(statusBarView, 0);
+
+            //ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
+            //decorView.addView(statusBarView);
         }
     }
 
