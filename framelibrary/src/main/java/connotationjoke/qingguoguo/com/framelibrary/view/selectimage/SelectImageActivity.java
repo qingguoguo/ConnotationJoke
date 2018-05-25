@@ -110,7 +110,7 @@ public class SelectImageActivity extends BaseSkinActivity implements View.OnClic
                 .setTitle("所有图片")
                 .create();
         // 改变状态栏的颜色
-        StatusBarUtil.statusBarTintColor(this, Color.parseColor("#261f1f"));
+        StatusBarUtil.setStatusBarTintColor(this, Color.parseColor("#261f1f"));
     }
 
     @Override
